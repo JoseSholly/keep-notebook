@@ -45,45 +45,43 @@
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" ></button>
   </div>
   <div class="offcanvas-body">
-    <ul class="side-bar">
-        <div>
-            <a href="">
-                <i class="bi bi-journal"></i>
-                <li>Notes</li>
-            </a>
-        </div> 
-        <div>
-            <a href="">
-                <i class="bi bi-bell"></i>
-                <li>Reminders</li>
-            </a>
-        </div> 
-        <div>
-            <a href="">
-                <i class="bi bi-bookmark-fill"></i>
-                <li>Django</li>
-            </a>
-        </div> 
-        <div>
-            <a href="">
-                <i class="bi bi-pencil-fill"></i>
-                <li>Edit labels</li>
-            </a>
-        </div> 
-        <div>
-            <a href="{% url 'notes:archived_notes' %}">
-                <i class="bi bi-file-arrow-down-fill"></i>
-                <li>Archived</li>
-            </a>
-        </div> 
-        <div>
-            <a href="">
-                <i class="bi bi-trash"></i>
-                <li>Trash</li>
-            </a>
-        </div> 
-    </ul>
+<ul class="side-bar">
+    <div>
+        <a href="{% url 'notes:note_list' %}">
+            <i class="bi bi-journal"></i>
+            <li>Notes</li>
+        </a>
+    </div> 
+    <div>
+        <a href="">
+            <i class="bi bi-bell"></i>
+            <li>Reminders</li>
+        </a>
+    </div> 
+    <div class="labels-wrapper">
+        {% include 'notes/labels_snippet.html' %}
+    </div>
+    <div>
+        <a href="">
+            <i class="bi bi-pencil-fill"></i>
+            <li>Edit labels</li>
+        </a>
+    </div> 
+    <div>
+        <a href="{% url 'notes:archived_notes' %}">
+            <i class="bi bi-file-arrow-down-fill"></i>
+            <li>Archived</li>
+        </a>
+    </div> 
+    <div>
+        <a href="">
+            <i class="bi bi-trash"></i>
+            <li>Trash</li>
+        </a>
+    </div> 
+</ul>
   </div>
+
 </div>
 
 

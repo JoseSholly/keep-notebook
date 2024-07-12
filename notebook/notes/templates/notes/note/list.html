@@ -13,6 +13,7 @@
             <h5 class="card-title">{{ pinned_note.title }}</h5>
             <p class="card-text">{{ pinned_note.body|truncatechars:650 }}</p>
         </a>
+        <span class="badge rounded-pill text-bg-info">{{ pinned_note.label.name}}</span>
     </div>
     {% endfor %}
 </div>
@@ -24,10 +25,12 @@
 
     <div class="card">
         <a href="" class="note-link">
-            <h5 class="card-title">{{ other_note.title }}</h5>
+            <h5 class="card-title">{{ other_note.title }} </h5><span class="badge rounded-pill text-bg-info">{{ other_note.label.name}}</span>
             <p class="card-text">{{ other_note.body|truncatechars:650 }}</p>
         </a>
+        
     </div>
+
     {% endfor %}
 </div>
 {% endblock %}

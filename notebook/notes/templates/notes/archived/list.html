@@ -1,11 +1,12 @@
 {% extends "notes/base.html" %}
-{% block title %}Archived Notes{% endblock %}
+{% block title %}NoteBook-Archived{% endblock %}
 {% block content %}
 
-<p class="text-capitalize">PINNED NOTES</p>
+<p class="text-capitalize" style="font-weight: bold; font-size: larger;">ARCHIVED</p>
+<p class="text-capitalize">NOTES</p>
 <div class="card-container">
     {% for note in archived_notes %}
-        {% if note.archived and note.pinned %}
+        {% if note.archived  %}
         <div class="card">
             <a href="" class="note-link">
                 <h5 class="card-title">{{ note.title }}</h5>
@@ -16,18 +17,6 @@
     {% endfor %}
 </div>
 
-<p class="text-capitalize">OTHER NOTES</p>
-<div class="card-container">
-    {% for note in archived_notes %}
-        {% if note.archived and not note.pinned %}
-        <div class="card">
-            <a href="" class="note-link">
-                <h5 class="card-title">{{ note.title }}</h5>
-                <p class="card-text">{{ note.body|truncatechars:650 }}</p>
-            </a>
-        </div>
-        {% endif %}
-    {% endfor %}
-</div>
+
 
 {% endblock %}
