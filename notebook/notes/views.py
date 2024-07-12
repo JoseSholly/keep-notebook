@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Note
+from django.db.models import Q
 # Create your views here.
 
 
@@ -14,3 +15,11 @@ def notes_list(request):
                    'other_notes': other_notes})
 
 
+def archived_list(request):
+    archived_notes= Note.objects.filter(Q(pinned=True,archived=True) | Q(pinned=False, archived=True)) 
+    context= { 'archived_notes':archived_notes,
+              }
+
+    return render(request,
+                  'notes/archived/list.html',
+                  context)
