@@ -1,14 +1,33 @@
 {% extends "notes/base.html" %}
 {% block title %}My NoteBook{% endblock %}
 {% block content %}
- <h1>My NoteBook</h1>
- {% for post in notes %}
- <h2>
 
- {{ post.title }}
- </a>
- </h2>
- </p>
- {{ post.body|truncatewords:30|linebreaks }}
- {% endfor %}
+
+<p class="text-capitalize">PINNED NOTES</p>
+<div class="card-container">
+    
+    {% for pinned_note in pinned_notes %}
+
+    <div class="card">
+        <a href="" class="note-link">
+            <h5 class="card-title">{{ pinned_note.title }}</h5>
+            <p class="card-text">{{ pinned_note.body|truncatechars:650 }}</p>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+
+<p class="text-capitalize">OTHER NOTES</p>
+<div class="card-container">
+    
+    {% for other_note in other_notes %}
+
+    <div class="card">
+        <a href="" class="note-link">
+            <h5 class="card-title">{{ other_note.title }}</h5>
+            <p class="card-text">{{ other_note.body|truncatechars:650 }}</p>
+        </a>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}
