@@ -4,5 +4,7 @@ app_name = 'notes'
 urlpatterns = [
     path('', views.notes_list, name='note_list'),
     path('archived/', views.archived_list, name='archived_notes'),
-    path('label/<str:label_name>/', views.label_list_view, name='label_list')
+    path('label/<str:label_name>/', views.label_list_view, name='label_list'),
+    path('<int:note_id>/', views.note_detail, name='note_details'),
+    
 ]

@@ -1,14 +1,15 @@
 {% extends "notes/base.html" %}
 {% block title %}NoteBook-Archived{% endblock %}
 {% block content %}
+{% load static %}
 
 <p class="text-capitalize" style="font-weight: bold; font-size: larger;">ARCHIVED</p>
 <p class="text-capitalize">NOTES</p>
 <div class="card-container">
     {% for note in archived_notes %}
         {% if note.archived  %}
-        <div class="card">
-            <a href="" class="note-link">
+        <div class="card" data-note-id="{{ note.id }}">
+        <a href="#" class="note-link" data-note-id="{{ note.id }}">
                 <h5 class="card-title">{{ note.title }}</h5>
                 <p class="card-text">{{ note.body|truncatechars:650 }}</p>
             </a>
@@ -16,7 +17,28 @@
         {% endif %}
     {% endfor %}
 </div>
+<!-- Modal -->
+<div class="modal fade" id="noteDetailModal" tabindex="-1" aria-labelledby="noteDetailModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content modal-lg-custom">
+      <div class="modal-header">
+        <input class="modal-title fs-5" id="noteTitle" placeholder="Title" value=""></input>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <textarea class="modal-body" id="noteBody" style="height: 500px; resize: none;" placeholder="Take a note..."></textarea>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="saveChangesButton">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
 
 
+{% endblock %}
 
+
+{% block extra_js %}
+<script src="{% static 'detail.js' %}"></script>
 {% endblock %}

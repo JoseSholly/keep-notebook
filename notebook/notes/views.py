@@ -1,6 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Note, Label
 from django.db.models import Q
+from django.http import JsonResponse
+from django.views.decorators.http import require_GET
+import json
 # Create your views here.
 
 
@@ -51,3 +54,18 @@ def label_list_view(request, label_name):
         return render(request, 'notes/label/empty.html', context)
 
     
+
+def note_detail(request, note_id):
+    note = get_object_or_404(Note, pk=note_id)
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        note.title = data.get('title', note.title)
+        note.body = data.get('body', note.body)
+        note.save()
+        return JsonResponse({'status': 'success'})
+
+    return JsonResponse({
+        'id': note.id,
+        'title': note.title,
+        'body': note.body,
+    })
