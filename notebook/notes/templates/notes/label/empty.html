@@ -1,0 +1,16 @@
+{% extends "notes/base.html" %}
+{% block title %}My NoteBook{% endblock %}
+{% block content %}
+
+
+<p class="text-capitalize">{{ label }}</p>
+
+<i class="bi bi-x-circle" style="color: white; font-size: 300px; margin-left: 30%;"></i>
+            
+<p class="card-text" style="font-size: 24px; margin-left: 30%;">No notes with {{ label }} label yet</p>
+        
+
+
+</div>
+
+{% endblock %}

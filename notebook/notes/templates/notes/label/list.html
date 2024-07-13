@@ -1,0 +1,24 @@
+{% extends "notes/base.html" %}
+{% block title %}My NoteBook{% endblock %}
+{% block content %}
+
+
+<p class="text-capitalize">{{ label }}</p>
+<div class="card-container">
+    {% for note in label_notes %}
+    {% if note %}
+    <div class="card">
+        <a href="" class="note-link">
+            <h5 class="card-title">{{ note.title }}</h5><span class="badge rounded-pill text-bg-info">{{ note.label.name}}</span>
+            <p class="card-text">{{ note.body|truncatechars:650 }}</p>
+        </a>
+        
+    </div>
+    {% else %}
+    {% include 'notes/label/empty.html' %}
+    {% endif %}
+   
+    {% endfor %}
+</div>
+
+{% endblock %}

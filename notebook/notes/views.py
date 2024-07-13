@@ -32,3 +32,22 @@ def labels_list(request):
         'labels': labels,
     }
     return render(request, 'note/labels_context_list.html', context)
+
+def label_list_view(request, label_name):
+    label= get_object_or_404(Label, name=label_name)
+    notes= Note.objects.filter(label=label)
+    if notes:
+        context = {
+            'label_notes': notes,
+            'label': label 
+        }
+        return render(request, 'notes/label/list.html', context)
+    else:
+        context = {
+        
+            'label': label 
+        }
+        
+        return render(request, 'notes/label/empty.html', context)
+
+    

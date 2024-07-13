@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 
@@ -34,3 +35,8 @@ class Note(models.Model):
 
     def __str__(self) -> str:
         return self.title
+
+    def get_label_absolute_url(self):
+        if self.label:
+            return reverse('notes:label_list', args=[self.label.name])
+        return reverse('notes:notes')
