@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
   const noteLinks = document.querySelectorAll(".note-link");
   const modal = new bootstrap.Modal(document.getElementById("noteDetailModal"));
+  
+  
 
   noteLinks.forEach((link) => {
     link.addEventListener("click", function (event) {
