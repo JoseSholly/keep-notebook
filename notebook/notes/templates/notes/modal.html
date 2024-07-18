@@ -1,0 +1,19 @@
+<!-- Modal -->
+<div class="modal fade" id="noteDetailModal" tabindex="-1" aria-labelledby="noteDetailModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content modal-lg-custom">
+      <div class="modal-header">
+        <input class="modal-title fs-5" id="noteTitle" placeholder="Title" value=""></input>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <textarea class="modal-body" id="noteBody" placeholder="Take a note..."></textarea>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="saveChangesButton">Save changes</button>
+      </div>
+      <p class="text-end" id="editedTime" style="color: black; padding: 0;" ></p>
+
+    </div>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>

@@ -19,6 +19,9 @@ document.addEventListener("DOMContentLoaded", function () {
           console.log("Note data:", data);
           document.getElementById("noteTitle").value = data.title;
           document.getElementById("noteBody").value = data.body;
+          document.getElementById(
+            "editedTime"
+          ).textContent = `Edited: ${data.updated}`;
           const saveButton = document.getElementById("saveChangesButton");
           saveButton.setAttribute("data-note-id", noteId);
           modal.show();
@@ -49,6 +52,9 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((response) => response.json())
         .then((data) => {
           console.log("Save response:", data);
+          document.getElementById(
+            "editedTime"
+          ).textContent = `Edited: ${data.updated}`; // Update edited time
           location.reload();
         })
         .catch((error) => {

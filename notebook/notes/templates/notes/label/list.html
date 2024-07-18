@@ -11,33 +11,21 @@
     {% if note %}
      <div class="card" data-note-id="{{ note.id }}">
         <a href="#" class="note-link" data-note-id="{{ note.id }}">
-            <h5 class="card-title">{{ note.title }}</h5><span class="badge rounded-pill text-bg-info">{{ note.label.name}}</span>
+            <h5 class="card-title">{{ note.title }}</h5>
             <p class="card-text">{{ note.body|truncatechars:650 }}</p>
         </a>
+        <span class="badge rounded-pill text-bg-info">{{ note.label.name}}</span>
         
     </div>
+
     {% else %}
     {% include 'notes/label/empty.html' %}
     {% endif %}
    
     {% endfor %}
-<!-- Modal -->
-<div class="modal fade" id="noteDetailModal" tabindex="-1" aria-labelledby="noteDetailModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal-content modal-lg-custom">
-      <div class="modal-header">
-        <input class="modal-title fs-5" id="noteTitle" placeholder="Title" value=""></input>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <textarea class="modal-body" id="noteBody" style="height: 500px; resize: none;" placeholder="Take a note..."></textarea>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="saveChangesButton">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
+
+{% include "notes/modal.html" %}
+
 
 {% endblock %}
 

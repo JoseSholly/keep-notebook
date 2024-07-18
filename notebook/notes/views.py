@@ -3,6 +3,8 @@ from .models import Note, Label
 from django.db.models import Q
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET
+from django.utils.dateformat import DateFormat
+from datetime import *
 import json
 # Create your views here.
 
@@ -54,7 +56,21 @@ def label_list_view(request, label_name):
         return render(request, 'notes/label/empty.html', context)
 
     
-
+def format_updated_time(updated):
+    now = datetime.now()
+    
+    if updated.date() == now.date():
+        return updated.strftime('Today %H:%M')
+    elif updated.date() == (now - timedelta(days=1)).date():
+        return updated.strftime('Yesterday %H:%M')
+    elif updated.date().year == now.year:
+        if (now.day - updated.day) <= 3:
+            return updated.strftime('%B %d %H:%M')
+        else:
+            return updated.strftime('%B %d %H:%M')
+    else:
+        return updated.strftime('%B %d, %Y %H:%M')
+    
 def note_detail(request, note_id):
     note = get_object_or_404(Note, pk=note_id)
     if request.method == 'POST':
@@ -62,10 +78,14 @@ def note_detail(request, note_id):
         note.title = data.get('title', note.title)
         note.body = data.get('body', note.body)
         note.save()
-        return JsonResponse({'status': 'success'})
+        return JsonResponse({
+            'status': 'success',
+            'updated': format_updated_time(note.updated)  # Format updated time
+        })
 
     return JsonResponse({
         'id': note.id,
         'title': note.title,
         'body': note.body,
+        'updated': format_updated_time(note.updated),  # Format updated time
     })
