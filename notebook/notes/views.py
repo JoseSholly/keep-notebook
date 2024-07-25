@@ -8,7 +8,7 @@ from django.utils.dateformat import DateFormat
 from datetime import *
 import json
 from django.contrib import messages
-from .forms import NoteForm
+from .forms import NoteForm, LabelForm
 # Create your views here.
 
 
@@ -80,7 +80,7 @@ def note_detail(request, note_id):
     note = get_object_or_404(Note, pk=note_id)
     if request.method == 'POST':
         data = json.loads(request.body)
-        print(data)
+        # print(data)
         note.title = data.get('title', note.title)
         note.body = data.get('body', note.body)
 
@@ -121,3 +121,16 @@ def note_create(request):
     # Pass a context variable to indicate we're in the create view
     # return render(request, 'notes/note/create.html', {'form': form})
     return redirect('note_list')
+
+def label_create(request):
+    if request.method == 'POST':
+        form = LabelForm(request.POST)
+        if form.is_valid():
+            label= form.save()
+
+            return redirect(reverse('notes:label_list', args=[label.name]))
+        else:
+            messages.error(request, 'There was an error creating the Label. Please check the form.')
+    else:
+        form = LabelForm()
+    return render(request, 'notes/label/form.html', {'form': form})
