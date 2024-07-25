@@ -43,6 +43,8 @@ INSTALLED_APPS = [
 
     # Apps 
     "notes.apps.NotesConfig",
+    "accounts.apps.AccountsConfig",
+
 ]
 
 MIDDLEWARE = [
@@ -134,3 +136,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 
+AUTH_USER_MODEL = 'accounts.CustomUser'
