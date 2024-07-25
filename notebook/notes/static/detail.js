@@ -1,8 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   const noteLinks = document.querySelectorAll(".note-link");
   const modal = new bootstrap.Modal(document.getElementById("noteDetailModal"));
-  
-  
 
   noteLinks.forEach((link) => {
     link.addEventListener("click", function (event) {
@@ -24,6 +22,20 @@ document.addEventListener("DOMContentLoaded", function () {
           document.getElementById(
             "editedTime"
           ).textContent = `Edited: ${data.updated}`;
+
+          // Set the label dropdown to the note's current label
+          const labelDropdown = document.getElementById("noteLabel");
+           if (data.label !== null) {
+             // If there's a label, set its value and update the text of the first option
+             labelDropdown.value = data.label;
+             labelDropdown.options[0].text =
+               labelDropdown.options[labelDropdown.selectedIndex].text;
+           } else {
+             // If there's no label, reset to the default "Choose label" option
+             labelDropdown.value = "";
+             labelDropdown.options[0].text = "Choose label";
+           }
+
           const saveButton = document.getElementById("saveChangesButton");
           saveButton.setAttribute("data-note-id", noteId);
           modal.show();
@@ -40,8 +52,18 @@ document.addEventListener("DOMContentLoaded", function () {
       const noteId = this.getAttribute("data-note-id");
       const title = document.getElementById("noteTitle").value;
       const body = document.getElementById("noteBody").value;
+      const labelSelect = document.getElementById("noteLabel");
+      const label =
+        labelSelect.value === labelSelect.options[0].value
+          ? null
+          : labelSelect.value;
+
+
+      // Convert empty string to null for label
+      const labelValue = label === "" ? null : label;
 
       console.log(`Saving changes for note ID: ${noteId}`);
+      //  console.log(`Label: ${label}`);
 
       fetch(`/notes/${noteId}/`, {
         method: "POST",
@@ -49,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
           "Content-Type": "application/json",
           "X-CSRFToken": getCookie("csrftoken"), // Adjust this line to get the CSRF token if you're using Django
         },
-        body: JSON.stringify({ title: title, body: body }),
+        body: JSON.stringify({ title: title, body: body, label: labelValue }),
       })
         .then((response) => response.json())
         .then((data) => {

@@ -1,9 +1,12 @@
 # forms.py
 
 from django import forms
-from .models import Note
+from .models import Note, Label
 
 class NoteForm(forms.ModelForm):
     class Meta:
         model = Note
-        fields = ['title', 'body', 'label']
+        fields = ['title', 'body', 'label', 'archived', 'pinned']
+        widgets = {
+            'label': forms.Select(choices=[(label.id, label.name) for label in Label.objects.all()])
+        }

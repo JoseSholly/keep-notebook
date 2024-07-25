@@ -80,12 +80,23 @@ def note_detail(request, note_id):
     note = get_object_or_404(Note, pk=note_id)
     if request.method == 'POST':
         data = json.loads(request.body)
+        print(data)
         note.title = data.get('title', note.title)
         note.body = data.get('body', note.body)
+
+        # Handle the label
+        label_id = data.get('label')
+        if label_id:
+            label = get_object_or_404(Label, pk=label_id)
+            note.label = label
+        else:
+            note.label = None
+
         note.save()
         return JsonResponse({
             'status': 'success',
-            'updated': format_updated_time(note.updated)  # Format updated time
+            'updated': format_updated_time(note.updated),  # Format updated time,
+            'label': note.label.id if note.label else None
         })
 
     return JsonResponse({
@@ -93,6 +104,7 @@ def note_detail(request, note_id):
         'title': note.title,
         'body': note.body,
         'updated': format_updated_time(note.updated),  # Format updated time
+        'label': note.label.id if note.label else None
     })
 
 def note_create(request):
