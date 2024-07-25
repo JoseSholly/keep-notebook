@@ -7,12 +7,14 @@ from django.views.decorators.http import require_GET
 from django.utils.dateformat import DateFormat
 from datetime import *
 import json
+from django.contrib import messages
 from .forms import NoteForm
 # Create your views here.
 
 
 
 def notes_list(request):
+    form = NoteForm()
     pinned_notes= Note.objects.filter(pinned=True, archived= False)
     other_notes= Note.objects.filter(pinned=False, archived= False)
     # Note.objects.filter(Q(pinned=True,archived=False) | Q(pinned=False, archived=False))
@@ -21,7 +23,8 @@ def notes_list(request):
                   'notes/note/list.html',
                   {'pinned_notes': pinned_notes,
                    'other_notes': other_notes,
-                   'labels': labels})
+                   'labels': labels,
+                   'form': form})
 
 
 def archived_list(request):
@@ -98,9 +101,11 @@ def note_create(request):
         if form.is_valid():
             note = form.save()
             return redirect(reverse('notes:note_list'))
+        else:
+            messages.error(request, 'There was an error creating the note. Please check the form.')
     else:
         form = NoteForm()
     
     # Pass a context variable to indicate we're in the create view
-    # return render(request, 'notes/note/note_create.html', {'form': form, 'is_create_view': True})
+    # return render(request, 'notes/note/create.html', {'form': form})
     return redirect('note_list')

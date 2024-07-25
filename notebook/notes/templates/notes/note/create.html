@@ -1,0 +1,39 @@
+{% extends "notes/base.html" %}
+{% block title %}My NoteBook{% endblock %}
+{% block content %}
+{% load static %}
+
+<div class="new-note-form" style="margin-top: 1%;
+    margin-left: 13%;
+    border: none">
+
+<form method="post" >
+  {% csrf_token %}
+  <div class="card text-bg-dark mb-3" style="max-width: 76rem; padding: 0; ">
+    <div class="card-header">
+      <input type="text" name="{{ form.title.name }}" class="form-control bg-dark text-white" id="{{ form.title.id_for_label }}" placeholder="Note Title" style="color: white; border: none; outline: none;">
+    </div>
+    <div class="card-body">
+      <textarea name="{{ form.body.name }}" class="form-control bg-dark text-white" id="{{ form.body.id_for_label }}" rows="4" placeholder="Note body..." style="border: none; outline: none;"></textarea>
+    </div>
+    <div class="card-footer">
+      <div class="d-flex justify-content-between align-items-center">
+        <select name="{{ form.label.name }}" class="form-select bg-dark text-white me-2" id="{{ form.label.id_for_label }}" style="max-width: 16rem; margin-left: 4%; ">
+          <option selected disabled>Choose label</option>
+          {% for value, label in form.label.field.choices %}
+            <option value="{{ value }}">{{ label }}</option>
+          {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-primary">Create</button>
+      </div>
+    </div>
+  </div>
+</form>
+
+
+    
+</div>
+
+{% endblock %}
+
+
