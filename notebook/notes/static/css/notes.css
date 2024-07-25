@@ -137,6 +137,8 @@ padding: 5px;
 }
 
 
+
+
 .card-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -306,4 +308,17 @@ padding: 5px;
     color: white; 
     padding: 0;
  }
+
+
+
+  .card input::placeholder,
+  .card textarea::placeholder,
+  .card select option:first-child {
+    color: #6c757d !important; /* Bootstrap's text-muted color */
+    opacity: 10; /* Firefox */
+  }
+.card input{
+    outline: none;
+}
+
 

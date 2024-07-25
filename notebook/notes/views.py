@@ -1,4 +1,5 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
 from .models import Note, Label
 from django.db.models import Q
 from django.http import JsonResponse
@@ -6,6 +7,7 @@ from django.views.decorators.http import require_GET
 from django.utils.dateformat import DateFormat
 from datetime import *
 import json
+from .forms import NoteForm
 # Create your views here.
 
 
@@ -89,3 +91,16 @@ def note_detail(request, note_id):
         'body': note.body,
         'updated': format_updated_time(note.updated),  # Format updated time
     })
+
+def note_create(request):
+    if request.method == 'POST':
+        form = NoteForm(request.POST)
+        if form.is_valid():
+            note = form.save()
+            return redirect(reverse('notes:note_list'))
+    else:
+        form = NoteForm()
+    
+    # Pass a context variable to indicate we're in the create view
+    # return render(request, 'notes/note/note_create.html', {'form': form, 'is_create_view': True})
+    return redirect('note_list')
