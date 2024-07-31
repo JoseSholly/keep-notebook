@@ -9,16 +9,20 @@ from datetime import *
 import json
 from django.contrib import messages
 from .forms import NoteForm, LabelForm
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 
 
 
+@login_required
 def notes_list(request):
+    user = request.user
     form = NoteForm()
-    pinned_notes= Note.objects.filter(pinned=True, archived= False)
-    other_notes= Note.objects.filter(pinned=False, archived= False)
-    # Note.objects.filter(Q(pinned=True,archived=False) | Q(pinned=False, archived=False))
-    labels= Label.objects.all()
+    pinned_notes = Note.objects.filter(user=user, pinned=True, archived=False)
+    other_notes = Note.objects.filter(user=user, pinned=False, archived=False)
+    labels = Label.objects.all()
+
     return render(request,
                   'notes/note/list.html',
                   {'pinned_notes': pinned_notes,
@@ -26,9 +30,10 @@ def notes_list(request):
                    'labels': labels,
                    'form': form})
 
-
+@login_required
 def archived_list(request):
-    archived_notes= Note.objects.filter(Q(pinned=True,archived=True) | Q(pinned=False, archived=True)) 
+    user= request.user
+    archived_notes= Note.objects.filter(Q(user=user, pinned=True,archived=True) | Q(user=user, pinned=False, archived=True)) 
     context= { 'archived_notes':archived_notes,
               }
 
@@ -75,9 +80,10 @@ def format_updated_time(updated):
             return updated.strftime('%B %d %H:%M')
     else:
         return updated.strftime('%B %d, %Y %H:%M')
-    
+@login_required
 def note_detail(request, note_id):
-    note = get_object_or_404(Note, pk=note_id)
+    user= request.user
+    note = get_object_or_404(Note, pk=note_id, user= user)
     if request.method == 'POST':
         data = json.loads(request.body)
         # print(data)
