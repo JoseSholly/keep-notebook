@@ -17,10 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from notes.views import notes_list
+from accounts.views import *
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('notes/', include('notes.urls', namespace='notes')),
+    path('account/', include('accounts.urls', namespace='user')),
     path('', notes_list, name='note_list'),
 ]

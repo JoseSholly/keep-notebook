@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-
+from accounts.models import CustomUser
 # Create your models here.
 
 
@@ -16,6 +16,7 @@ class Label(models.Model):
         return self.name
 
 class Note(models.Model):
+    user= models.ForeignKey(CustomUser,on_delete=models.CASCADE, related_name='user', default=1)
     title= models.CharField(max_length=100, null=False)
     body= models.TextField()
     label= models.ForeignKey(Label, on_delete=models.SET_NULL, related_name="notes", blank=True, null=True)

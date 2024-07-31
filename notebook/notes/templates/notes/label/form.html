@@ -1,14 +1,15 @@
 {% extends "notes/base.html" %}
 {% block title %}Create Label{% endblock %}
 {% block content %}
-<div class="new-note-form" style="margin-top: 1%; margin-left: 13%; border: none">
+<div class="new-note-form" style="margin-top: 1%; margin-left: 22%; border: none; padding: 30px;">
     <form method="post" action="{% url 'notes:label_create' %}">
         {% csrf_token %}
-        <div class="card text-bg-dark mb-3" style="max-width: 76rem; padding: 0;">
+        <div class="card text-bg-dark mb-3" style="max-width: 40rem; height: 12rem; padding: 0;">
             <div class="card-header">
-                <input type="text" name="{{ form.name.name }}" class="form-control bg-dark text-white" id="{{ form.name.id_for_label }}" placeholder="Label Name" style="color: white; border: none; outline: none;">
+                <p style="margin: 15px; ">Create New Label</p>
+                <input type="text" name="{{ form.name.name }}" class="form-control bg-dark text-white" id="{{ form.name.id_for_label }}" placeholder="Label Name" style="color: white; margin: 10px; padding: 10px; max-width: 35rem;">
             </div>
-            <button type="submit" class="btn btn-primary">Create Label</button>
+            <button type="submit" class="btn btn-primary" style="width: 350px; margin: 10px 0px  10px 150px;">Create Label</button>
         </div>
     </form>
 </div>
