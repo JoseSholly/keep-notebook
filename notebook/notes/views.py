@@ -41,17 +41,20 @@ def archived_list(request):
                   'notes/archived/list.html',
                   context)
 
-
+@login_required
 def labels_list(request):
-    labels = Label.objects.all()
+    user= request.user
+    labels = Label.objects.all(user=user)
     context = {
         'labels': labels,
     }
     return render(request, 'note/labels_context_list.html', context)
 
+@login_required
 def label_list_view(request, label_name):
-    label= get_object_or_404(Label, name=label_name)
-    notes= Note.objects.filter(label=label)
+    user= request.user
+    label= get_object_or_404(Label, name=label_name, user= user)
+    notes= Note.objects.filter(label=label, user= user)
     if notes:
         context = {
             'label_notes': notes,
@@ -81,6 +84,7 @@ def format_updated_time(updated):
             return updated.strftime('%B %d %H:%M')
     else:
         return updated.strftime('%B %d, %Y %H:%M')
+    
 @login_required
 def note_detail(request, note_id):
     user= request.user
@@ -130,12 +134,16 @@ def note_create(request):
         form = NoteForm()
     return render(request, 'notes/note/create.html', {'form': form})
 
+
+@login_required
 def label_create(request):
+    user= request.user
     if request.method == 'POST':
         form = LabelForm(request.POST)
         if form.is_valid():
-            label= form.save()
-
+            label= form.save(commit=False)
+            label.user = user
+            label= form.save(commit=True)
             return redirect(reverse('notes:label_list', args=[label.name]))
         else:
             messages.error(request, 'There was an error creating the Label. Please check the form.')

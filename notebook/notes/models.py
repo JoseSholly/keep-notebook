@@ -5,7 +5,8 @@ from accounts.models import CustomUser
 
 
 class Label(models.Model):
-    name = models.CharField(max_length=50, unique=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='labels', default=None)
+    name = models.CharField(max_length=50, unique=True, null=False)
     
     class Meta:
         verbose_name = "Label"
