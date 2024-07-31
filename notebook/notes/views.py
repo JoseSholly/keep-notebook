@@ -41,6 +41,7 @@ def archived_list(request):
                   'notes/archived/list.html',
                   context)
 
+
 def labels_list(request):
     labels = Label.objects.all()
     context = {
@@ -113,20 +114,21 @@ def note_detail(request, note_id):
         'label': note.label.id if note.label else None
     })
 
+@login_required
 def note_create(request):
+    user = request.user
     if request.method == 'POST':
         form = NoteForm(request.POST)
         if form.is_valid():
-            note = form.save()
+            note = form.save(commit=False)  
+            note.user = user
+            note.save()  # Save the Note instance to the database
             return redirect(reverse('notes:note_list'))
         else:
             messages.error(request, 'There was an error creating the note. Please check the form.')
     else:
         form = NoteForm()
-    
-    # Pass a context variable to indicate we're in the create view
-    # return render(request, 'notes/note/create.html', {'form': form})
-    return redirect('note_list')
+    return render(request, 'notes/note/create.html', {'form': form})
 
 def label_create(request):
     if request.method == 'POST':

@@ -4,8 +4,8 @@ from .models import Note, Label
 
 @admin.register(Note)
 class NoteAdmin(admin.ModelAdmin):
-    list_display= ['id', 'title','label','created', 'updated']
-    search_fields= ['title', 'body', 'updated', 'archived', 'pinned', ]
+    list_display= ['id', 'user','title','label','created', 'updated']
+    search_fields= ['user','title', 'body', 'updated', 'archived', 'pinned', ]
     list_filter = ['pinned', 'created', 'updated', 'archived']
 
 class NoteInline(admin.TabularInline):
