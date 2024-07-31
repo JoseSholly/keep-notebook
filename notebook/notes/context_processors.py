@@ -1,12 +1,12 @@
-from .models import Label, Note
-from .forms import NoteForm
-from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse
+from .models import Label
 
 def labels_processor(request):
-    labels = Label.objects.all()
+    if request.user.is_authenticated:
+        labels = Label.objects.filter(user=request.user)
+    
+    else:
+        labels = Label.objects.none()
 
-    context = {
+    return {
         'labels': labels,
     }
-    return context

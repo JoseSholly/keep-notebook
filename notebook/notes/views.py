@@ -21,13 +21,11 @@ def notes_list(request):
     form = NoteForm()
     pinned_notes = Note.objects.filter(user=user, pinned=True, archived=False)
     other_notes = Note.objects.filter(user=user, pinned=False, archived=False)
-    labels = Label.objects.all()
 
     return render(request,
                   'notes/note/list.html',
                   {'pinned_notes': pinned_notes,
                    'other_notes': other_notes,
-                   'labels': labels,
                    'form': form})
 
 @login_required
@@ -44,7 +42,7 @@ def archived_list(request):
 @login_required
 def labels_list(request):
     user= request.user
-    labels = Label.objects.all(user=user)
+    labels = Label.objects.filter(user=user)
     context = {
         'labels': labels,
     }
@@ -98,7 +96,7 @@ def note_detail(request, note_id):
         # Handle the label
         label_id = data.get('label')
         if label_id:
-            label = get_object_or_404(Label, pk=label_id)
+            label = get_object_or_404(Label, pk=label_id, user=user)
             note.label = label
         else:
             note.label = None
