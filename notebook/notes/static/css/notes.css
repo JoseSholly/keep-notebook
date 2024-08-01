@@ -322,3 +322,9 @@ padding: 5px;
 }
 
 
+ .custom-modal {
+      position: absolute;
+      top: 230px; /* Adjust as necessary */
+      right: 20px; /* Adjust as necessary */
+      width: 300px; /* Adjust as necessary */
+    }

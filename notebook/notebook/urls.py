@@ -23,6 +23,6 @@ from accounts.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('notes/', include('notes.urls', namespace='notes')),
-    path('account/', include('accounts.urls', namespace='user')),
+    path('accounts/', include('accounts.urls', namespace='user')),
     path('', notes_list, name='note_list'),
 ]
