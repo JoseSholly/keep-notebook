@@ -3,71 +3,84 @@
 {% block content %}
 {% load static %}
 
+<div class="card-body">
+  <p class="text-center" style="font-size: 28px; font-weight: bold;">Welcome</p>
+  <form method="post" action="{% url 'accounts:login' %}">
+    {% csrf_token %}
 
+    <!-- Non-field errors -->
+    {% if form.non_field_errors %}
+    <div class="alert alert-danger" role="alert"
+      style="font-size: 14px; padding: 5px; text-decoration: solid; font-weight: bold;">
+      {{ form.non_field_errors }}
+    </div>
+    {% endif %}
 
-    
-    <div class="card-body">
-      <p class="text-center" style="font-size: 28px; font-weight: bold;">Welcome</p>
-      <form method="post" action="{% url 'accounts:login' %}">
-        {% csrf_token %}
-        {% if form.non_field_errors %}
-          <div class="alert alert-danger" role="alert" style="font-size: 14px; padding: 5px; text-decoration: solid; font-weight: bold;">
-            {{ form.non_field_errors }}
-        </div>
-        {% endif %}
-        
+    {% for error in form.username.errors %}
+    {% if error %}
+      <div class="alert alert-danger" role="alert"
+        style="font-size: 14px; padding: 5px; text-decoration: solid; font-weight: bold;">
+        {{ error }}
+      </div>
+      {% endif %}
+    {% endfor %}
 
-        <!-- Email input -->
-        <div data-mdb-input-init class="form-outline mb-4">
-          {{ form.username }}
-          <label class="form-label" for="id_email">Email address</label>
-        </div>
-
-        <!-- Password input -->
-        <div data-mdb-input-init class="form-outline mb-4">
-          {{ form.password }}
-          <label class="form-label" for="id_password">Password</label>
-        </div>
-
-        <!-- Remember me checkbox -->
-        <div class="row mb-4">
-          <div class="col d-flex justify-content-center">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="form2Example31" checked />
-              <label class="form-check-label" for="form2Example31"> Remember me </label>
-            </div>
-          </div>
-          <div class="col">
-            <a href="#!">Forgot password?</a>
-          </div>
-        </div>
-
-        <!-- Submit button -->
-        <button type="submit" class="btn btn-primary btn-block mb-4">Log in</button>
-
-        <!-- Register buttons -->
-        <div class="text-center">
-          <p>Not a member? <a href="#!">Register</a></p>
-          <p>or sign up with:</p>
-          <button type="button" class="btn btn-link btn-floating mx-1">
-            <i class="fab fa-facebook-f"></i>
-          </button>
-          <button type="button" class="btn btn-link btn-floating mx-1">
-            <i class="fab fa-google"></i>
-          </button>
-          <button type="button" class="btn btn-link btn-floating mx-1">
-            <i class="fab fa-twitter"></i>
-          </button>
-          <button type="button" class="btn btn-link btn-floating mx-1">
-            <i class="fab fa-github"></i>
-          </button>
-        </div>
-      </form>
+    <!-- Email input -->
+    <div data-mdb-input-init class="form-outline mb-4">
+      {{ form.username }}
+      <label class="form-label" for="id_email">Email address</label>
+      
     </div>
 
+    <!-- Password input -->
+    <div data-mdb-input-init class="form-outline mb-4">
+      {{ form.password }}
+      <label class="form-label" for="id_password">Password</label>
+      {% for error in form.password.errors %}
+      <div class="alert alert-danger" role="alert"
+        style="font-size: 14px; padding: 5px; text-decoration: solid; font-weight: bold;">
+        {{ error }}
+      </div>
+      {% endfor %}
+    </div>
 
-  <!-- MDB -->
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.2/mdb.umd.min.js"></script>
+    <!-- Remember me checkbox -->
+    <div class="row mb-4">
+      <div class="col d-flex justify-content-center">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="form2Example31" checked />
+          <label class="form-check-label" for="form2Example31"> Remember me </label>
+        </div>
+      </div>
+      <div class="col">
+        <a href="#!">Forgot password?</a>
+      </div>
+    </div>
 
+    <!-- Submit button -->
+    <button type="submit" class="btn btn-primary btn-block mb-4">Log in</button>
 
-  {% endblock %}
+    <!-- Register buttons -->
+    <div class="text-center">
+      <p>Not a member? <a href="{% url 'accounts:signup' %}">Register</a></p>
+      <p>or sign up with:</p>
+      <button type="button" class="btn btn-link btn-floating mx-1">
+        <i class="fab fa-facebook-f"></i>
+      </button>
+      <button type="button" class="btn btn-link btn-floating mx-1">
+        <i class="fab fa-google"></i>
+      </button>
+      <button type="button" class="btn btn-link btn-floating mx-1">
+        <i class="fab fa-twitter"></i>
+      </button>
+      <button type="button" class="btn btn-link btn-floating mx-1">
+        <i class="fab fa-github"></i>
+      </button>
+    </div>
+  </form>
+</div>
+
+<!-- MDB -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.2/mdb.umd.min.js"></script>
+
+{% endblock %}

@@ -20,6 +20,7 @@ def signup(request):
 def login_view(request):
     if request.method == 'POST':
         form = CustomAuthenticationForm(request, data=request.POST)
+        
         if form.is_valid():
             email = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
@@ -29,6 +30,8 @@ def login_view(request):
                 return redirect(reverse('notes:note_list'))
             else:
                 messages.error(request, 'Invalid email or password.')
+        else:
+            messages.error(request, 'Invalid email or password.')
     else:
         form = CustomAuthenticationForm()
     return render(request, 'users/login.html', {'form': form})
