@@ -35,4 +35,4 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect(reverse('accounts:login'))
+    return render(request, 'users/logout.html')
