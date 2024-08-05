@@ -11,7 +11,7 @@
     <!-- Non-field errors -->
     {% if form.non_field_errors %}
     <div class="alert alert-danger" role="alert"
-      style="font-size: 14px; padding: 5px; text-decoration: solid; font-weight: bold;">
+      style="font-size: 14px; padding: 10px; text-decoration: solid; font-weight: bold;">
       {{ form.non_field_errors }}
     </div>
     {% endif %}
@@ -19,7 +19,7 @@
     {% for error in form.username.errors %}
     {% if error %}
       <div class="alert alert-danger" role="alert"
-        style="font-size: 14px; padding: 5px; text-decoration: solid; font-weight: bold;">
+        style="font-size: 14px; padding: 10px; text-decoration: solid; font-weight: bold;">
         {{ error }}
       </div>
       {% endif %}

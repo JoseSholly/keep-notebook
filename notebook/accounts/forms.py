@@ -6,9 +6,15 @@ from django. contrib.auth import login, authenticate
 import re
 
 class CustomUserCreationForm(UserCreationForm):
+    email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={'class': 'form-control', 'id': 'id_email'}))
+    first_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'id': 'id_first_name'}))
+    last_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'id': 'id_last_name'}))
+    password1 = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class': 'form-control', 'id': 'id_password1'}))
+    password2 = forms.CharField(label='Confirm Password', widget=forms.PasswordInput(attrs={'class': 'form-control', 'id': 'id_password2'}))
     class Meta(UserCreationForm.Meta):
         model = CustomUser
-        fields = ('email',)
+        fields = ('email','first_name', 'last_name',)
+        
 
 class CustomUserChangeForm(UserChangeForm):
     class Meta:
