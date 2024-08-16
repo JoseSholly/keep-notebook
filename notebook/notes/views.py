@@ -149,3 +149,19 @@ def label_create(request):
     else:
         form = LabelForm()
     return render(request, 'notes/label/form.html', {'form': form})
+
+
+@login_required
+def toggle_archive_status(request, note_id):
+    user = request.user
+    note = get_object_or_404(Note, pk=note_id, user=user)
+    if request.method== 'POST':
+        # Toggle the archived status
+        note.archived = not note.archived
+        note.save()
+
+
+    return JsonResponse({
+        'status': 'success',
+        'archived': note.archived,
+    })
