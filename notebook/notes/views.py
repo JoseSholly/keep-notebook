@@ -131,7 +131,8 @@ def note_create(request):
             messages.error(request, 'There was an error creating the note. Please check the form.')
     else:
         form = NoteForm()
-    return render(request, 'notes/note/create.html', {'form': form})
+    # return render(request, 'notes/note/create.html', {'form': form})
+    return redirect(reverse('notes:note_list'))
 
 
 @login_required
