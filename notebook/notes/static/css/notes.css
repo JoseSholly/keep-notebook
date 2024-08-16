@@ -328,3 +328,8 @@ padding: 5px;
       right: 20px; /* Adjust as necessary */
       width: 300px; /* Adjust as necessary */
     }
+
+.archived-background {
+    background-color: #007bff; /* Change to your desired color */
+    color: white; /* Ensure the icon color contrasts with the background */
+}

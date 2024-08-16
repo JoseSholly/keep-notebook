@@ -113,7 +113,8 @@ def note_detail(request, note_id):
         'title': note.title,
         'body': note.body,
         'updated': format_updated_time(note.updated),  # Format updated time
-        'label': note.label.id if note.label else None
+        'label': note.label.id if note.label else None,
+        'archived': note.archived,
     })
 
 @login_required

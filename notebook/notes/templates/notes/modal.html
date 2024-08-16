@@ -7,13 +7,26 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <textarea class="modal-body" id="noteBody" placeholder="Take a note..."></textarea>
-      <div class="modal-footer">
-        <div class="d-flex justify-content-between align-items-center">
-          <select name="label" class="form-select bg-dark text-white me-2" id="noteLabel" style="max-width: 17rem; margin-left: 4%;">
+      <div class="modal-footer" style="align-items: start;">
+        <div class="d-flex justify-content-between align-items-left">
+
+          <button type="button" class="btn btn-dark" id="archiveButton"
+            style="margin-left: 5px; margin-right: 5px; width: 50px; height: 50px; border-radius: 50%;" title="Archive">
+            <i class="bi bi-archive-fill"></i>
+          </button>
+
+          
+
+
+          <button type="button" class="btn btn-dark"
+            style="margin-left: 5px; margin-right: 5px; width: 50px; height: 50px; border-radius: 50%;" title="Delete"><i
+              class="bi bi-trash3-fill"></i></button>
+          <select name="label" class="form-select bg-dark text-white me-2" id="noteLabel"
+            style="max-width: 17rem; margin-left: 4%;">
             <option selected disabled>Choose label</option>
             <option value="">-------</option>
             {% for label in labels %}
-              <option value="{{ label.id }}">{{ label.name }}</option>
+            <option value="{{ label.id }}">{{ label.name }}</option>
             {% endfor %}
           </select>
         </div>
