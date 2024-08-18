@@ -2,20 +2,34 @@
 {% block title %}Archived | Notebook{% endblock %}
 {% block content %}
 {% load static %}
-
-<p class="text-capitalize" style="font-weight: bold; font-size: larger;">ARCHIVED</p>
-<p class="text-capitalize">NOTES</p>
-<div class="card-container">
-    {% for note in archived_notes %}
-        {% if note.archived  %}
-        <div class="card" data-note-id="{{ note.id }}">
-        <a href="#" class="note-link" data-note-id="{{ note.id }}">
-                <h5 class="card-title">{{ note.title }}</h5>
-                <p class="card-text">{{ note.body|truncatechars:650 }}</p>
-            </a>
-            <span class="badge rounded-pill text-bg-info">{{ note.label.name }}</span>
+<div id="archiveToast" class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive"
+    aria-atomic="true" style="position: fixed; top: 1rem; right: 1rem;">
+    <div class="d-flex">
+        <div id="toastMessage" class="toast-body">
+            Note has been archived.
         </div>
-        {% endif %}
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+            aria-label="Close"></button>
+    </div>
+</div>
+
+<p class="text-capitalize" style="font-weight: bold; font-size: larger;">ARCHIVED NOTES</p>
+<!-- <p class="text-capitalize">NOTES</p> -->
+<div class="card-container">
+    <!-- {{ archived_notes | length}} -->
+    {% for note in archived_notes %}
+    {% if note.archived %}
+    <div class="card" data-note-id="{{ note.id }}">
+        <a href="#" class="note-link" data-note-id="{{ note.id }}">
+            <h5 class="card-title">{{ note.title }}</h5>
+            <p class="card-text">{{ note.body|truncatechars:650 }}</p>
+        </a>
+        <span class="badge rounded-pill text-bg-info">{{ note.label.name }}</span>
+    </div>
+    {% else %}
+    {% include 'notes/archived/empty.html' %}
+    {% endif %}
+
     {% endfor %}
 </div>
 

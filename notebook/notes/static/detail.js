@@ -114,8 +114,10 @@ document.addEventListener("DOMContentLoaded", function () {
             archiveBtn.style.backgroundColor = "#6C757D"; // Archived state background
             archiveBtn.style.color = "white"; // Archived state text color
 
+
             // Redirect to archive list page
             window.location.href = "/notes/archived/"; // Change to your archive list URL
+            
           } else {
             archiveBtn.setAttribute("title", "Archive");
             archiveBtn.querySelector("i").classList.remove("bi-archive-fill");
@@ -123,8 +125,8 @@ document.addEventListener("DOMContentLoaded", function () {
             archiveBtn.style.backgroundColor = ""; // Revert to original
             archiveBtn.style.color = ""; // Revert to original
 
-            // Redirect to archive list page
-            window.location.href = "/notes/archived/"; // Change to your archive list URL
+            // Redirect to notes list page
+            window.location.href = "/notes/"; // Change to your archive list URL
           }
         })
         .catch((error) => console.error("Error:", error));
