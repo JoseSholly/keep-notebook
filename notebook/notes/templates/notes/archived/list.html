@@ -16,7 +16,8 @@
 <p class="text-capitalize" style="font-weight: bold; font-size: larger;">ARCHIVED NOTES</p>
 <!-- <p class="text-capitalize">NOTES</p> -->
 <div class="card-container">
-    <!-- {{ archived_notes | length}} -->
+
+    {% if archived_notes|length >= 1 %}
     {% for note in archived_notes %}
     {% if note.archived %}
     <div class="card" data-note-id="{{ note.id }}">
@@ -26,11 +27,14 @@
         </a>
         <span class="badge rounded-pill text-bg-info">{{ note.label.name }}</span>
     </div>
+    {% endif %}
+    {% endfor %}
+
     {% else %}
     {% include 'notes/archived/empty.html' %}
     {% endif %}
 
-    {% endfor %}
+    
 </div>
 
 {% include "notes/modal.html" %}
