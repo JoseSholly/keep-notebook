@@ -1,0 +1,26 @@
+{% extends "notes/base.html" %}
+{% block title %}Trash | Notebook{% endblock %}
+{% block content %}
+{% load static %}
+
+<p class="text-capitalize" style="font-weight: bold; font-size: larger;">TRASH</p>
+<div class="card-container">
+
+    {% for trashed_note in trashed_notes %}
+    <div class="card" data-note-id="{{ trashed_note.id }}">
+        <a href="#" class="note-link" data-note-id="{{ trashed_note.id }}">
+            <h5 class="card-title">{{ trashed_note.title }}</h5>
+            <p class="card-text">{{ trashed_note.body|truncatechars:650 }}</p>
+        </a>
+        <span class="badge rounded-pill text-bg-info">{{ trashed_note.label.name }}</span>
+    </div>
+    {% endfor %}
+</div>
+
+{% include "notes/modal.html" %}
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'detail.js' %}"></script>
+{% endblock %}

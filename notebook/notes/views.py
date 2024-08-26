@@ -166,3 +166,31 @@ def toggle_archive_status(request, note_id):
         'status': 'success',
         'archived': note.archived,
     })
+
+
+@login_required
+def move_to_trash(request, node_id):
+    
+    if request.method=="POST":
+        user= request.user
+        note= get_object_or_404(Note, pk= node_id, user=user)
+        note.trashed= True
+        note.save()
+        return redirect(reverse('notes:note_list'))
+
+@login_required
+def restore_from_trash(request, note_id):
+    
+    if request.method=="POST":
+        note = get_object_or_404(Note, id=note_id, user=request.user)
+        note.trashed = False
+        note.save()
+        return redirect(reverse('notes:trash_list'))  # Redirect to the trash list
+    
+
+@login_required
+def trash_list(request):
+    if request.method== "GET":
+        trashed_notes = Note.objects.filter(user=request.user, trashed=True).order_by('-updated')
+        return render(request, 'notes/note/trash_list.html', {'trashed_notes': trashed_notes})
+
