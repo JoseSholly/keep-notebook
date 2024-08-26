@@ -6,7 +6,7 @@ from accounts.models import CustomUser
 
 class Label(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='labels', default=None)
-    name = models.CharField(max_length=50, unique=True, null=False)
+    name = models.CharField(max_length=50, null=False)
     
     class Meta:
         verbose_name = "Label"
@@ -17,7 +17,7 @@ class Label(models.Model):
         return self.name
 
 class Note(models.Model):
-    user= models.ForeignKey(CustomUser,on_delete=models.CASCADE, related_name='user')
+    user= models.ForeignKey(CustomUser,on_delete=models.CASCADE, related_name='notes')
     title= models.CharField(max_length=100, null=False)
     body= models.TextField()
     label= models.ForeignKey(Label, on_delete=models.SET_NULL, related_name="notes", blank=True, null=True)
@@ -25,7 +25,7 @@ class Note(models.Model):
     pinned= models.BooleanField(default= False)
     created = models.DateTimeField(auto_now_add= True)
     updated= models.DateTimeField(auto_now=True)
-
+    trashed = models.BooleanField(default=False) 
 
     class Meta:
         ordering= ['-updated']
