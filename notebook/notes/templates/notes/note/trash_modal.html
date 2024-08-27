@@ -1,0 +1,19 @@
+<!-- Trash Note Detail Modal -->
+<div class="modal fade" id="trashNoteDetailModal" tabindex="-1" aria-labelledby="trashNoteDetailModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content modal-lg-custom custom-color">
+            <div class="modal-header">
+                <h5 class="modal-title fs-5" id="trashNoteTitle"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="trashNoteBody"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" id="permanentDeleteButton">Delete Permanently</button>
+                <button type="button" class="btn btn-primary" id="restoreButton">Restore</button>
+            </div>
+            <p class="text-end" id="trashNoteEditedTime"></p>
+        </div>
+    </div>
+</div>

@@ -19,8 +19,8 @@ from django.contrib.auth.decorators import login_required
 def notes_list(request):
     user = request.user
     form = NoteForm()
-    pinned_notes = Note.objects.filter(user=user, pinned=True, archived=False)
-    other_notes = Note.objects.filter(user=user, pinned=False, archived=False)
+    pinned_notes = Note.objects.filter(user=user, pinned=True, archived=False, trashed= False)
+    other_notes = Note.objects.filter(user=user, pinned=False, archived=False,  trashed= False)
 
     return render(request,
                   'notes/note/list.html',
@@ -31,7 +31,7 @@ def notes_list(request):
 @login_required
 def archived_list(request):
     user= request.user
-    archived_notes= Note.objects.filter(Q(user=user, pinned=True,archived=True) | Q(user=user, pinned=False, archived=True)) 
+    archived_notes= Note.objects.filter(Q(user=user, pinned=True,archived=True, trashed= False) | Q(user=user, pinned=False, archived=True, trashed= False)) 
     context= { 'archived_notes':archived_notes,
               }
 
@@ -52,7 +52,7 @@ def labels_list(request):
 def label_list_view(request, label_name):
     user= request.user
     label= get_object_or_404(Label, name=label_name, user= user)
-    notes= Note.objects.filter(label=label, user= user)
+    notes= Note.objects.filter(label=label, user= user,  trashed= False)
     if notes:
         context = {
             'label_notes': notes,
@@ -86,7 +86,7 @@ def format_updated_time(updated):
 @login_required
 def note_detail(request, note_id):
     user= request.user
-    note = get_object_or_404(Note, pk=note_id, user= user)
+    note = get_object_or_404(Note, pk=note_id, user= user, trashed= False)
     if request.method == 'POST':
         data = json.loads(request.body)
         # print(data)
@@ -155,7 +155,7 @@ def label_create(request):
 @login_required
 def toggle_archive_status(request, note_id):
     user = request.user
-    note = get_object_or_404(Note, pk=note_id, user=user)
+    note = get_object_or_404(Note, pk=note_id, user=user, trashed= False)
     if request.method== 'POST':
         # Toggle the archived status
         note.archived = not note.archived
@@ -194,3 +194,16 @@ def trash_list(request):
         trashed_notes = Note.objects.filter(user=request.user, trashed=True).order_by('-updated')
         return render(request, 'notes/note/trash_list.html', {'trashed_notes': trashed_notes})
 
+
+@login_required
+def trash_note_detail(request, note_id):
+    user= request.user
+    note = get_object_or_404(Note, pk=note_id, user= user, trashed=True)
+    if request.method == 'GET':
+        return JsonResponse({
+        'id': note.id,
+        'title': note.title,
+        'body': note.body,
+        'updated': format_updated_time(note.updated), 
+
+    })

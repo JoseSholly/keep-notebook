@@ -8,7 +8,7 @@
 
     {% for trashed_note in trashed_notes %}
     <div class="card" data-note-id="{{ trashed_note.id }}">
-        <a href="#" class="note-link" data-note-id="{{ trashed_note.id }}">
+        <a href="#" class="trash-note-link" data-note-id="{{ trashed_note.id }}">
             <h5 class="card-title">{{ trashed_note.title }}</h5>
             <p class="card-text">{{ trashed_note.body|truncatechars:650 }}</p>
         </a>
@@ -17,10 +17,10 @@
     {% endfor %}
 </div>
 
-{% include "notes/modal.html" %}
+{% include "notes/note/trash_modal.html" %}
 
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'detail.js' %}"></script>
+<script src="{% static 'trash_note_detail.js' %}"></script>
 {% endblock %}
