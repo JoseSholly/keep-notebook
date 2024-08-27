@@ -18,6 +18,9 @@ document.addEventListener("DOMContentLoaded", function () {
           ).textContent = `Edited: ${data.updated}`;
 
           archiveButton.setAttribute("data-note-id", data.id);
+          document
+            .querySelector(".btn-delete")
+            .setAttribute("data-note-id", data.id);
 
           const labelDropdown = document.getElementById("noteLabel");
           if (data.label !== null) {
@@ -90,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
   // Archive/Unarchive button functionality
-  const archiveBtn = document.getElementById("archiveButton"); 
+  const archiveBtn = document.getElementById("archiveButton");
   if (archiveBtn) {
     archiveBtn.addEventListener("click", function () {
       const noteId = this.getAttribute("data-note-id");
@@ -105,7 +108,6 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
-          
 
           if (data.archived) {
             archiveBtn.setAttribute("title", "Unarchive");
@@ -114,10 +116,8 @@ document.addEventListener("DOMContentLoaded", function () {
             archiveBtn.style.backgroundColor = "#6C757D"; // Archived state background
             archiveBtn.style.color = "white"; // Archived state text color
 
-
             // Redirect to archive list page
             window.location.href = "/notes/archived/"; // Change to your archive list URL
-            
           } else {
             archiveBtn.setAttribute("title", "Archive");
             archiveBtn.querySelector("i").classList.remove("bi-archive-fill");
@@ -133,6 +133,39 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // Delete button functionality
+  // Target the delete button by its ID
+  // Select all delete buttons with the class `btn-delete`
+  const deleteBtns = document.querySelectorAll(".btn-delete");
+
+  deleteBtns.forEach((deleteBtn) => {
+    deleteBtn.addEventListener("click", function () {
+      const noteId = this.getAttribute("data-note-id");
+
+      // Log to check if noteId is correctly retrieved
+      console.log("Note ID:", noteId);
+
+      if (noteId) {
+        fetch(`/notes/${noteId}/trash/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCookie("csrftoken"), // Ensure CSRF protection
+          },
+        })
+          .then((response) => {
+            if (response.ok) {
+              window.location.href = "/notes/"; // Redirect to the notes list after moving to trash
+            } else {
+              console.error("Error moving note to trash:", response.statusText);
+            }
+          })
+          .catch((error) => console.error("Error:", error));
+      } else {
+        console.error("Note ID is missing.");
+      }
+    });
+  });
   function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== "") {

@@ -10,16 +10,15 @@
       <div class="modal-footer" style="align-items: start;">
         <div class="d-flex justify-content-between align-items-left">
           <button type="button" class="btn btn-dark" id="archiveButton"
-            style="margin-left: 5px; margin-right: 5px; width: 45px; height: 45px; border-radius: 50%;" title="Archive" data-note-id="{{ note.id }}">
+            style="margin-left: 5px; margin-right: 5px; width: 45px; height: 45px; border-radius: 50%;" title="Archive"
+            data-note-id="{{ note.id }}">
             <i class="bi bi-archive-fill"></i>
           </button>
-
-          
-
-
-          <button type="button" class="btn btn-dark"
-            style="margin-left: 5px; margin-right: 5px; width: 45px; height: 45px; border-radius: 50%;" title="Delete"><i
-              class="bi bi-trash3-fill"></i></button>
+          <button type="button" class="btn btn-dark btn-delete" id="Delete_Button"
+            style="margin-left: 5px; margin-right: 5px; width: 45px; height: 45px; border-radius: 50%;" title="Delete"
+            data-note-id="{{ note.id }}">
+            <i class="bi bi-trash3-fill"></i>
+          </button>
           <select name="label" class="form-select bg-dark text-white me-2" id="noteLabel"
             style="max-width: 17rem; margin-left: 4%;">
             <option selected disabled>Choose label</option>

@@ -169,11 +169,11 @@ def toggle_archive_status(request, note_id):
 
 
 @login_required
-def move_to_trash(request, node_id):
+def move_to_trash(request, note_id):
     
     if request.method=="POST":
         user= request.user
-        note= get_object_or_404(Note, pk= node_id, user=user)
+        note= get_object_or_404(Note, pk= note_id, user=user)
         note.trashed= True
         note.save()
         return redirect(reverse('notes:note_list'))
