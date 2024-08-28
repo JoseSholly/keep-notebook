@@ -11,6 +11,7 @@ from django.contrib import messages
 from .forms import NoteForm, LabelForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
+from django.utils import timezone
 
 # Create your views here.
 
@@ -175,6 +176,7 @@ def move_to_trash(request, note_id):
     user = request.user
     note = get_object_or_404(Note, pk=note_id, user=user)
     note.trashed = True
+    note.trashed_at= timezone.now()
     note.save()
     # return redirect(reverse('notes:note'))
     return JsonResponse({
@@ -188,6 +190,7 @@ def restore_from_trash(request, note_id):
     if request.method=="POST":
         note = get_object_or_404(Note, id=note_id, user=request.user)
         note.trashed = False
+        note.trashed_at= None
         note.save()
         return redirect(reverse('notes:note_trash'))  # Redirect to the trash list
     
@@ -208,6 +211,6 @@ def trash_note_detail(request, note_id):
         'id': note.id,
         'title': note.title,
         'body': note.body,
-        'updated': format_updated_time(note.updated), 
+        'trashed_at': format_updated_time(note.trashed_at), 
 
     })

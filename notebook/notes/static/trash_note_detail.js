@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
           document.getElementById("trashNoteBody").textContent = data.body;
           document.getElementById(
             "trashNoteEditedTime"
-          ).textContent = `Edited: ${data.updated}`;
+          ).textContent = `Edited: ${data.trashed_at}`;
 
           const permanentDeleteButton = document.getElementById(
             "permanentDeleteButton"

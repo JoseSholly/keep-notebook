@@ -26,6 +26,7 @@ class Note(models.Model):
     created = models.DateTimeField(auto_now_add= True)
     updated= models.DateTimeField(auto_now=True)
     trashed = models.BooleanField(default=False) 
+    trashed_at= models.DateTimeField(null=True, blank=True)
 
     class Meta:
         ordering= ['-updated']
