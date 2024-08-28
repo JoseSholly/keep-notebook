@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log("Note ID:", noteId);
 
       if (noteId) {
-        fetch(`/notes/${noteId}/trash/`, {
+        fetch(`/notes/${noteId}/move-to-trash/`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
