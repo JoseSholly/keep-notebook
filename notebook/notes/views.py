@@ -10,6 +10,7 @@ import json
 from django.contrib import messages
 from .forms import NoteForm, LabelForm
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 
 # Create your views here.
 
@@ -169,14 +170,17 @@ def toggle_archive_status(request, note_id):
 
 
 @login_required
+@require_POST
 def move_to_trash(request, note_id):
-    
-    if request.method=="POST":
-        user= request.user
-        note= get_object_or_404(Note, pk= note_id, user=user)
-        note.trashed= True
-        note.save()
-        return redirect(reverse('notes:note_list'))
+    user = request.user
+    note = get_object_or_404(Note, pk=note_id, user=user)
+    note.trashed = True
+    note.save()
+    # return redirect(reverse('notes:note'))
+    return JsonResponse({
+        'status': 'success',
+        'message': 'Note moved to trash successfully.'
+    })
 
 @login_required
 def restore_from_trash(request, note_id):
@@ -185,7 +189,7 @@ def restore_from_trash(request, note_id):
         note = get_object_or_404(Note, id=note_id, user=request.user)
         note.trashed = False
         note.save()
-        return redirect(reverse('notes:trash_list'))  # Redirect to the trash list
+        return redirect(reverse('notes:note_trash'))  # Redirect to the trash list
     
 
 @login_required

@@ -6,7 +6,7 @@ from .models import Note, Label
 class NoteAdmin(admin.ModelAdmin):
     list_display= ['id', 'user','title','label','created', 'updated']
     search_fields= ['user','title', 'body', 'updated', 'archived', 'pinned', ]
-    list_filter = ['pinned', 'created', 'updated', 'archived']
+    list_filter = ['pinned', 'created', 'updated', 'archived', 'trashed',]
 
 class NoteInline(admin.TabularInline):
     model= Note

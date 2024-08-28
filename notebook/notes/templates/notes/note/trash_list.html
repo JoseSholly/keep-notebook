@@ -2,8 +2,9 @@
 {% block title %}Trash | Notebook{% endblock %}
 {% block content %}
 {% load static %}
-
 <p class="text-capitalize" style="font-weight: bold; font-size: larger;">TRASH</p>
+
+<p class="text-capitalize" style="font-weight: bold; font-size: larger; font-style: italic;">Notes in Trash will be deleted after 14 days...</p>
 <div class="card-container">
 
     {% for trashed_note in trashed_notes %}
