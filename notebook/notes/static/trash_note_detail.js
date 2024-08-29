@@ -3,6 +3,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const trashModal = new bootstrap.Modal(
     document.getElementById("trashNoteDetailModal")
   );
+  const confirmDeleteModal = new bootstrap.Modal(
+    document.getElementById("confirmDeleteModal")
+  );
 
   trashNoteLinks.forEach((link) => {
     link.addEventListener("click", function (event) {
@@ -39,7 +42,42 @@ document.addEventListener("DOMContentLoaded", function () {
     .getElementById("permanentDeleteButton")
     .addEventListener("click", function () {
       const noteId = this.getAttribute("data-note-id");
-      // Implement permanent delete functionality here
+
+      // Show the confirmation modal
+      confirmDeleteModal.show();
+
+      // Attach the note ID to the confirm button in the modal
+      const confirmDeleteButton = document.getElementById(
+        "confirmDeleteButton"
+      );
+      confirmDeleteButton.setAttribute("data-note-id", noteId);
+    });
+
+  // Handle the confirmation delete
+  document
+    .getElementById("confirmDeleteButton")
+    .addEventListener("click", function () {
+      const noteId = this.getAttribute("data-note-id");
+
+      if (noteId) {
+        fetch(`/notes/${noteId}/delete/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCookie("csrftoken"),
+          },
+        })
+          .then((response) => {
+            if (response.ok) {
+              window.location.href = "/notes/trash/"; // Redirect after deletion
+            } else {
+              console.error("Error deleting note:", response.statusText);
+            }
+          })
+          .catch((error) => console.error("Error:", error));
+      } else {
+        console.error("Note ID is missing.");
+      }
     });
 
   // Restore functionality
@@ -47,9 +85,6 @@ document.addEventListener("DOMContentLoaded", function () {
     .getElementById("restoreButton")
     .addEventListener("click", function () {
       const noteId = this.getAttribute("data-note-id");
-      // Log to check if noteId is correctly retrieved
-      console.log("Note ID:", noteId);
-
       if (noteId) {
         fetch(`/notes/${noteId}/restore-from-trash/`, {
           method: "POST",
@@ -60,9 +95,9 @@ document.addEventListener("DOMContentLoaded", function () {
         })
           .then((response) => {
             if (response.ok) {
-              window.location.href = "/notes/trash/"; // Redirect to the notes list after moving to trash
+              window.location.href = "/notes/trash/"; // Redirect after restore
             } else {
-              console.error("Error moving note to trash:", response.statusText);
+              console.error("Error restoring note:", response.statusText);
             }
           })
           .catch((error) => console.error("Error:", error));
@@ -70,12 +105,12 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Note ID is missing.");
       }
     });
-  
+
   function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== "") {
       const cookies = document.cookie.split(";");
-      for (let i = 0; i < cookies.length; i++) {
+      for (let i = 0; cookies.length; i++) {
         const cookie = cookies[i].trim();
         if (cookie.substring(0, name.length + 1) === name + "=") {
           cookieValue = decodeURIComponent(cookie.substring(name.length + 1));

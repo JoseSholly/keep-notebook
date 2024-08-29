@@ -193,6 +193,13 @@ def restore_from_trash(request, note_id):
         note.save()
         return redirect(reverse('notes:note_trash'))  # Redirect to the trash list
     
+@login_required
+def delete_note(request, note_id):
+    note = get_object_or_404(Note, id=note_id, user=request.user, trashed=True)
+    note.trashed=False
+    note.delete()
+    return redirect(reverse('notes:note_trash'))
+    
 
 @login_required
 def trash_list(request):
