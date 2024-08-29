@@ -12,5 +12,6 @@ urlpatterns = [
     path('trash/', views.trash_list, name='note_trash'),
     path('<int:note_id>/move-to-trash/', views.move_to_trash, name="move_trash"),
     path('trash/<int:note_id>/', views.trash_note_detail, name='trash_note_detail'),
+    path('<int:note_id>/restore-from-trash/', views.restore_from_trash, name="restore_note"),
     
 ]

@@ -186,9 +186,8 @@ def move_to_trash(request, note_id):
 
 @login_required
 def restore_from_trash(request, note_id):
-    
     if request.method=="POST":
-        note = get_object_or_404(Note, id=note_id, user=request.user)
+        note = get_object_or_404(Note, id=note_id, user=request.user, trashed=True)
         note.trashed = False
         note.trashed_at= None
         note.save()
