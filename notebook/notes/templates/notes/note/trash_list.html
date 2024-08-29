@@ -11,7 +11,7 @@
     <div class="card" data-note-id="{{ trashed_note.id }}">
         <a href="#" class="trash-note-link" data-note-id="{{ trashed_note.id }}">
             <h5 class="card-title">{{ trashed_note.title }}</h5>
-            <p class="card-text">{{ trashed_note.body|truncatechars:650 }}</p>
+            <p class="card-text" >{{ trashed_note.body|truncatechars:650 }}</p>
         </a>
         <span class="badge rounded-pill text-bg-info">{{ trashed_note.label.name }}</span>
     </div>
