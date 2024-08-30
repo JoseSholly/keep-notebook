@@ -54,7 +54,7 @@ def labels_list(request):
 def label_list_view(request, label_name):
     user= request.user
     label= get_object_or_404(Label, name=label_name, user= user)
-    notes= Note.objects.filter(label=label, user= user,  trashed= False)
+    notes= Note.objects.filter(label=label, user= user,  trashed= False, archived=False)
     if notes:
         context = {
             'label_notes': notes,
@@ -117,6 +117,7 @@ def note_detail(request, note_id):
         'updated': format_updated_time(note.updated),  # Format updated time
         'label': note.label.id if note.label else None,
         'archived': note.archived,
+        'pinned': note.pinned
     })
 
 @login_required
@@ -157,7 +158,7 @@ def label_create(request):
 @login_required
 def toggle_archive_status(request, note_id):
     user = request.user
-    note = get_object_or_404(Note, pk=note_id, user=user, trashed= False)
+    note = get_object_or_404(Note,pk=note_id, user=user, trashed= False)
     if request.method== 'POST':
         # Toggle the archived status
         note.archived = not note.archived
@@ -219,4 +220,19 @@ def trash_note_detail(request, note_id):
         'body': note.body,
         'trashed_at': format_updated_time(note.trashed_at), 
 
+    })
+
+
+@login_required
+def toggle_pinned_status(request, note_id):
+    user = request.user
+    note = get_object_or_404(Note, user=user, pk=note_id, trashed=False)
+    if request.method== 'POST':
+        # Toggle the pinned status
+        note.pinned = not note.pinned
+        note.save()
+
+    return JsonResponse({
+        'status': 'success',
+        'pinned': note.pinned,
     })

@@ -14,5 +14,6 @@ urlpatterns = [
     path('trash/<int:note_id>/', views.trash_note_detail, name='trash_note_detail'),
     path('<int:note_id>/restore-from-trash/', views.restore_from_trash, name="restore_note"),
     path('<int:note_id>/delete/', views.delete_note, name="delete_note"),
+    path('<int:note_id>/pin-note/', views.toggle_pinned_status, name="toogle_pinned_status"), 
     
 ]
