@@ -91,7 +91,7 @@ def note_detail(request, note_id):
     note = get_object_or_404(Note, pk=note_id, user= user, trashed= False)
     if request.method == 'POST':
         data = json.loads(request.body)
-        # print(data)
+        
         note.title = data.get('title', note.title)
         note.body = data.get('body', note.body)
 

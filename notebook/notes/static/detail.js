@@ -3,29 +3,36 @@ document.addEventListener("DOMContentLoaded", function () {
   const modal = new bootstrap.Modal(document.getElementById("noteDetailModal"));
   const archiveButton = document.getElementById("archiveButton");
   const pinButton = document.getElementById("pinButton");
-  const deleteButton = document.querySelector(".btn-delete"); // Assuming there's only one delete button at a time
+  const deleteButton = document.querySelector(".btn-delete");
+  const saveButton = document.getElementById("saveChangesButton");
 
+  // Event listeners for note links to open the modal
   noteLinks.forEach((link) => {
     link.addEventListener("click", function (event) {
       event.preventDefault();
       const noteId = this.getAttribute("data-note-id");
+      
 
+      // Fetch note details from the server
       fetch(`/notes/${noteId}/`)
         .then((response) => response.json())
         .then((data) => {
+          // Populate modal with note details
           document.getElementById("noteTitle").value = data.title;
           document.getElementById("noteBody").value = data.body;
           document.getElementById(
             "editedTime"
           ).textContent = `Edited: ${data.updated}`;
 
+          // Update buttons' note IDs
           archiveButton.setAttribute("data-note-id", data.id);
           deleteButton.setAttribute("data-note-id", data.id);
           pinButton.setAttribute("data-note-id", data.id);
 
+          // Handle label dropdown
           const labelDropdown = document.getElementById("noteLabel");
           if (data.label !== null) {
-            labelDropdown.value = data.label;
+            labelDropdown.value = data.label; // Select the label
             labelDropdown.options[0].text =
               labelDropdown.options[labelDropdown.selectedIndex].text;
           } else {
@@ -38,19 +45,50 @@ document.addEventListener("DOMContentLoaded", function () {
           updatePinButtonState(data.pinned);
           updateDeleteButtonTooltip();
 
-          const saveButton = document.getElementById("saveChangesButton");
+          // Set note ID for the save button
           saveButton.setAttribute("data-note-id", noteId);
-          modal.show();
+          modal.show(); // Show the modal
         })
         .catch((error) => console.error("Error fetching note details:", error));
     });
   });
 
+  // Save changes button functionality
+  saveButton.addEventListener("click", function () {
+    const noteId = this.getAttribute("data-note-id");
+    const title = document.getElementById("noteTitle").value;
+    const body = document.getElementById("noteBody").value;
+    const labelSelect = document.getElementById("noteLabel");
+    const label = labelSelect.value ? labelSelect.value : null;
+
+    // console.log("Save button clicked. Note ID:", noteId);
+    // console.log("Title:", title, "Body:", body, "Label:", label);
+
+    // Send updated note details to the server
+    fetch(`/notes/${noteId}/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCookie("csrftoken"),
+      },
+      body: JSON.stringify({ title: title, body: body, label: label }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("Changes saved successfully.");
+          window.location.href = "/notes/"; // Refresh the page or handle success
+        } else {
+          console.error("Error saving changes:", response.statusText);
+        }
+      })
+      .catch((error) => console.error("Error saving changes:", error));
+  });
   // Archive/Unarchive button functionality
   if (archiveButton) {
     archiveButton.addEventListener("click", function () {
       const noteId = this.getAttribute("data-note-id");
 
+      // Toggle archive status via the server
       fetch(`/notes/${noteId}/toggle-archive/`, {
         method: "POST",
         headers: {
@@ -62,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((data) => {
           updateArchiveButtonState(data.archived);
 
-          // Redirect to archive list or notes list page based on archive status
+          // Redirect based on archive status
           window.location.href = data.archived ? "/notes/archived/" : "/notes/";
         })
         .catch((error) => console.error("Error:", error));
@@ -74,6 +112,7 @@ document.addEventListener("DOMContentLoaded", function () {
     pinButton.addEventListener("click", function () {
       const noteId = this.getAttribute("data-note-id");
 
+      // Toggle pin status via the server
       fetch(`/notes/${noteId}/pin-note/`, {
         method: "POST",
         headers: {
@@ -85,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((data) => {
           updatePinButtonState(data.pinned);
 
-          // Reload or redirect based on your application needs
+          // Reload or redirect as needed
           window.location.href = "/notes/";
         })
         .catch((error) => console.error("Error:", error));
@@ -96,9 +135,8 @@ document.addEventListener("DOMContentLoaded", function () {
   deleteButton.addEventListener("click", function () {
     const noteId = this.getAttribute("data-note-id");
 
-    console.log("Note ID:", noteId);
-
     if (noteId) {
+      // Move note to trash via the server
       fetch(`/notes/${noteId}/move-to-trash/`, {
         method: "POST",
         headers: {
@@ -108,7 +146,7 @@ document.addEventListener("DOMContentLoaded", function () {
       })
         .then((response) => {
           if (response.ok) {
-            window.location.href = "/notes/"; // Redirect to the notes list after moving to trash
+            window.location.href = "/notes/"; // Redirect to the notes list
           } else {
             console.error("Error moving note to trash:", response.statusText);
           }
