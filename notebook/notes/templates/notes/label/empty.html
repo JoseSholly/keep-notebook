@@ -1,9 +1,19 @@
 {% extends "notes/base.html" %}
 {% block title %}{{ label.name }} Label | Notebook {% endblock %}
 {% block content %}
+{% load static %}
 
+<div class="edit_label" style="display:block;">
+    <p class="text-capitalize" style="font-weight: bold; font-size: larger;">Label: {{ label }}
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-label-id="{{ label.id }}"
+            data-bs-target="#EditLabelModal"
+            style="margin-left: 5px; margin-right: 5px; width: 45px; height: 45px; border-radius: 50%;" title="Edit">
+            <i class="bi bi-pencil"></i>
+        </button>
+        </button>
+    </p>
+</div>
 
-<p class="text-capitalize">{{ label }}</p>
 
 <i class="bi bi-x-circle" style="color: white; font-size: 300px; margin-left: 30%;"></i>
             
@@ -12,5 +22,9 @@
 
 
 </div>
+{% include "notes/label/edit_label_modal.html" %}
+{% block extra_js %}
+<script src="{% static 'edit_label.js' %}"></script>
+{% endblock %}
 
 {% endblock %}

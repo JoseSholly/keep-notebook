@@ -173,7 +173,6 @@ def label_edit(request, label_id):
                 "message": "Label updated successfully.",
                 "label": new_label_name})
     elif request.method=="GET":
-        print(label_id)
         return JsonResponse({"label": label.name})
 
 @login_required
