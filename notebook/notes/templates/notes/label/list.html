@@ -4,31 +4,40 @@
 
 {% load static %}
 
+<div class="edit_label" style="display:block;">
+    <p class="text-capitalize" style="font-weight: bold; font-size: larger;">{{ label }} 
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-label-id="{{ label.id }}" data-bs-target="#EditLabelModal" style="margin-left: 5px; margin-right: 5px; width: 45px; height: 45px; border-radius: 50%;" title="Edit">
+        <i class="bi bi-pencil"></i>
+        </button>
+    </button>
+    </p>
+</div>
 
-<p class="text-capitalize" style="font-weight: bold; font-size: larger;">{{ label }}</p>
 <div class="card-container">
     {% for note in label_notes %}
     {% if note %}
-     <div class="card" data-note-id="{{ note.id }}">
+    <div class="card" data-note-id="{{ note.id }}">
         <a href="#" class="note-link" data-note-id="{{ note.id }}">
             <h5 class="card-title">{{ note.title }}</h5>
             <p class="card-text">{{ note.body|truncatechars:650 }}</p>
         </a>
         <span class="badge rounded-pill text-bg-info">{{ note.label.name}}</span>
-        
+
     </div>
 
     {% else %}
     {% include 'notes/label/empty.html' %}
     {% endif %}
-   
+
     {% endfor %}
 
-{% include "notes/modal.html" %}
+    {% include "notes/modal.html" %}
+    {% include "notes/label/edit_label_modal.html" %}
 
 
-{% endblock %}
+    {% endblock %}
 
-{% block extra_js %}
-<script src="{% static 'detail.js' %}"></script>
-{% endblock %}
+    {% block extra_js %}
+    <script src="{% static 'detail.js' %}"></script>
+    <script src="{% static 'edit_label.js' %}"></script>
+    {% endblock %}

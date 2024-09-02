@@ -156,6 +156,27 @@ def label_create(request):
 
 
 @login_required
+def label_edit(request, label_id):
+    
+    user= request.user
+    label= get_object_or_404(Label, id=label_id, user=user)
+
+    if request.method=="POST":
+        data= json.loads(request.body)
+        new_label_name = data.get('label_name')
+
+        if new_label_name:
+            label.name = new_label_name
+            label.save()
+            return JsonResponse({
+                "success": True, 
+                "message": "Label updated successfully.",
+                "label": new_label_name})
+    elif request.method=="GET":
+        print(label_id)
+        return JsonResponse({"label": label.name})
+
+@login_required
 def toggle_archive_status(request, note_id):
     user = request.user
     note = get_object_or_404(Note,pk=note_id, user=user, trashed= False)
