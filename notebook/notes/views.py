@@ -140,18 +140,20 @@ def note_create(request):
 
 @login_required
 def label_create(request):
-    user= request.user
+    user = request.user
     if request.method == 'POST':
         form = LabelForm(request.POST)
         if form.is_valid():
-            label= form.save(commit=False)
+            
+            label = form.save(commit=False)
             label.user = user
-            label= form.save(commit=True)
+            label.save()
             return redirect(reverse('notes:label_list', args=[label.name]))
         else:
             messages.error(request, 'There was an error creating the Label. Please check the form.')
     else:
         form = LabelForm()
+        
     return render(request, 'notes/label/form.html', {'form': form})
 
 

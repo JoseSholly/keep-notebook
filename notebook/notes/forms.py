@@ -21,8 +21,6 @@ class NoteForm(forms.ModelForm):
 
 
 class LabelForm(forms.ModelForm):
-    name = forms.EmailField(required=True,widget=forms.TextInput(attrs={'class': 'form-control', 'id': 'id_first_name'}))
-    
     class Meta:
         model= Label
         fields= ['name']
