@@ -178,6 +178,19 @@ def label_edit(request, label_id):
         return JsonResponse({"label": label.name})
 
 @login_required
+def label_delete(request, label_id):
+    user= request.user
+    label= get_object_or_404(Label, id=label_id, user=user)
+
+    if request.method == "DELETE":
+        label.delete()
+
+        return JsonResponse({
+                "success": True, 
+                "message": "Label deleted successfully.",
+                })
+
+@login_required
 def toggle_archive_status(request, note_id):
     user = request.user
     note = get_object_or_404(Note,pk=note_id, user=user, trashed= False)

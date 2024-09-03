@@ -6,12 +6,18 @@
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Edit label name</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <input type="text" class="form-control bg-dark text-white"
-                id="LabelName" placeholder="Edit label..." style="color: white; border: none; outline: none; margin-bottom: 10px;">
+            <input type="text" class="form-control bg-dark text-white" id="LabelName" placeholder="Edit label..."
+                style="color: white; border: none; outline: none; margin-bottom: 10px;">
             <div class="modal-footer">
+                <!-- Delete Button -->
+                <button type="button" class="btn btn-dark btn-delete" id="delete_Button" style="margin-left: 5px; margin-right: 5px; width: 45px; height: 45px; border-radius: 50%;" title="Delete Label" data-label-id="{{ label.id }}">
+                    <i class="bi bi-trash3-fill"></i>
+                </button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" id='saveButton'>Save changes</button>
             </div>
         </div>
     </div>
 </div>
+
+{% include "notes/label/confirm_delete.html" %}
