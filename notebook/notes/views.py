@@ -148,6 +148,7 @@ def label_create(request):
             label = form.save(commit=False)
             label.user = user
             label.save()
+            messages.success(request, "Label was created successfully")
             return redirect(reverse('notes:label_list', args=[label.name]))
         else:
             messages.error(request, 'There was an error creating the Label. Please check the form.')
