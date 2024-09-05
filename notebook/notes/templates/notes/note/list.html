@@ -3,7 +3,7 @@
 {% block content %}
 {% load static %}
 
-<p class="text-capitalize" style="font-weight: bold; font-size: larger;">PINNED NOTES</p>
+<p class="text-capitalize" id="pinnedArea" style="font-weight: bold; font-size: larger;">PINNED NOTES</p>
 <div class="card-container">
     
     {% for pinned_note in pinned_notes %}
@@ -17,7 +17,7 @@
     {% endfor %}
 </div>
 
-<p class="text-capitalize" style="font-weight: bold; font-size: larger;">OTHER NOTES</p>
+<p class="text-capitalize" style="font-weight: bold; font-size: larger;" id="noteArea" >OTHER NOTES</p>
 <div class="card-container">
     
     {% for other_note in other_notes %}

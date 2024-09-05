@@ -101,7 +101,8 @@ document.addEventListener("DOMContentLoaded", function () {
           updateArchiveButtonState(data.archived);
 
           // Redirect based on archive status
-          window.location.href = data.archived ? "/notes/archived/" : "/notes/";
+          // window.location.href = data.archived ? "/notes/archived/" : "/notes/archived/";
+          window.location.reload()
         })
         .catch((error) => console.error("Error:", error));
     });
@@ -125,7 +126,8 @@ document.addEventListener("DOMContentLoaded", function () {
           updatePinButtonState(data.pinned);
 
           // Reload or redirect as needed
-          window.location.href = "/notes/";
+          // window.location.href = "/notes/";
+          window.location.reload()
         })
         .catch((error) => console.error("Error:", error));
     });

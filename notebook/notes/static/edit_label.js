@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const labelInput = document.getElementById("LabelName");
   const saveButton = document.getElementById("saveButton");
   const deleteButton = document.getElementById("delete_Button");
+  const editButton = document.getElementById("editButton");
   const confirmDeleteModal = new bootstrap.Modal(
     document.getElementById("confirmDeleteModal")
   );
@@ -11,6 +12,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Initialize the tooltip on the delete button
   initializeTooltip(deleteButton);
+
+  initializeTooltip(editButton);
 
   // Event listener for opening the modal
   editLabelModal.addEventListener("show.bs.modal", function (event) {
@@ -73,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (data.success) {
           console.log("Label deleted successfully.");
           confirmDeleteModal.hide(); // Hide the modal
-          window.location.href= `/notes/` // Reload the page after successful deletion
+          window.location.href = `/notes/`; // Reload the page after successful deletion
         } else {
           console.error("Error deleting label:", data.message);
         }
