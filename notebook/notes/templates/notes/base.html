@@ -156,15 +156,22 @@
   </div>
 
 {% if messages %}
-<div class="notifications position-fixed top-0 end-0 p-3" style="z-index: 1050;">
+<div class="notifications position-fixed top-0 start-50 translate-middle-x p-3"
+  style="z-index: 1050; width: 100%; max-width: 500px; animation: slideDown 0.5s ease;">
   {% for message in messages %}
   <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-    {{ message }}
+    <p class="fw-semibold">{{ message }}</p>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
   {% endfor %}
 </div>
 {% endif %}
+
+
+
+
+
+
 
   <div class="content">
     

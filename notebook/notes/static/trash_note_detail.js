@@ -95,6 +95,9 @@ document.addEventListener("DOMContentLoaded", function () {
         })
           .then((response) => {
             if (response.ok) {
+
+            trashModal.hide()
+            showNotification("success", "Note restored.");
               window.location.href = "/notes/trash/"; // Redirect after restore
             } else {
               console.error("Error restoring note:", response.statusText);
@@ -105,7 +108,32 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Note ID is missing.");
       }
     });
+  // Function to create and show notification
+  function showNotification(message, type = "success") {
+    const notificationsContainer = document.createElement("div");
+    notificationsContainer.className =
+      "notifications position-fixed top-0 start-50 translate-middle-x p-3";
+    notificationsContainer.style.zIndex = 1050;
+    notificationsContainer.style.width = "100%";
+    notificationsContainer.style.maxWidth = "500px";
+    notificationsContainer.style.animation = "slideDown 0.5s ease";
 
+    const alertDiv = document.createElement("div");
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+    alertDiv.role = "alert";
+    alertDiv.innerHTML = `
+    ${message}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  `;
+
+    notificationsContainer.appendChild(alertDiv);
+    document.body.appendChild(notificationsContainer);
+
+    // Automatically remove notification after 3 seconds
+    setTimeout(() => {
+      notificationsContainer.remove();
+    }, 3000);
+  }
   function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== "") {

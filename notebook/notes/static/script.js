@@ -23,14 +23,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function createNoteElement(note, index) {
     const noteDiv = document.createElement("div");
     noteDiv.className = "note";
-    noteDiv.innerHTML = `
-            <div class="note-title" contenteditable="true">${note.title}</div>
-            <div class="note-content" contenteditable="true">${note.content}</div>
-            <div class="note-actions">
-                <button class="pin-btn"><i class="fas fa-thumbtack"></i></button>
-                <button class="delete-btn"><i class="fas fa-trash"></i></button>
-            </div>
-        `;
 
     const pinBtn = noteDiv.querySelector(".pin-btn");
     const deleteBtn = noteDiv.querySelector(".delete-btn");

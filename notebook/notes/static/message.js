@@ -8,5 +8,5 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => alert.remove(), 150); // Remove after fading
       }
     });
-  }, 8000); // Adjust the time as needed
+  }, 5000); // Adjust the time as needed
 });

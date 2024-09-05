@@ -104,6 +104,7 @@ def note_detail(request, note_id):
             note.label = None
 
         note.save()
+        messages.success(request, "Note updated.")
         return JsonResponse({
             'status': 'success',
             'updated': format_updated_time(note.updated),  # Format updated time,
@@ -129,6 +130,7 @@ def note_create(request):
             note = form.save(commit=False)  
             note.user = user
             note.save()  # Save the Note instance to the database
+            messages.success(request, "Note created successfully")
             return redirect(reverse('notes:note_list'))
         else:
             messages.error(request, 'There was an error creating the note. Please check the form.')
@@ -171,6 +173,7 @@ def label_edit(request, label_id):
         if new_label_name:
             label.name = new_label_name
             label.save()
+            messages.success(request, "Label updated succesfully")
             return JsonResponse({
                 "success": True, 
                 "message": "Label updated successfully.",
@@ -185,7 +188,7 @@ def label_delete(request, label_id):
 
     if request.method == "DELETE":
         label.delete()
-
+        messages.success(request, "Label deleted succesfully")
         return JsonResponse({
                 "success": True, 
                 "message": "Label deleted successfully.",
@@ -198,6 +201,10 @@ def toggle_archive_status(request, note_id):
     if request.method== 'POST':
         # Toggle the archived status
         note.archived = not note.archived
+        if note.archived==True:
+            messages.success(request, "Note archived")
+        else:
+            messages.success(request, "Note unarchived")
         note.save()
 
 
@@ -215,6 +222,7 @@ def move_to_trash(request, note_id):
     note.trashed = True
     note.trashed_at= timezone.now()
     note.save()
+    messages.success(request, "Note moved to trash")
     # return redirect(reverse('notes:note'))
     return JsonResponse({
         'status': 'success',
@@ -228,14 +236,24 @@ def restore_from_trash(request, note_id):
         note.trashed = False
         note.trashed_at= None
         note.save()
-        return redirect(reverse('notes:note_trash'))  # Redirect to the trash list
+        messages.success(request, "Note restored successfully")
+        return JsonResponse({
+        'status': 'success',
+        'message': 'Note restored.'
+    })
+
     
 @login_required
 def delete_note(request, note_id):
     note = get_object_or_404(Note, id=note_id, user=request.user, trashed=True)
     note.trashed=False
     note.delete()
-    return redirect(reverse('notes:note_trash'))
+    messages.success(request, "Label deleted successfully")
+    return JsonResponse({
+        'status': 'success',
+        'message': 'Note deleted permanently'
+    })
+
     
 
 @login_required
@@ -267,6 +285,10 @@ def toggle_pinned_status(request, note_id):
         # Toggle the pinned status
         note.pinned = not note.pinned
         note.save()
+        if note.pinned==True:
+            messages.success(request, "Note pinned")
+        else:
+            messages.success(request, "Note unpinned")
 
     return JsonResponse({
         'status': 'success',
