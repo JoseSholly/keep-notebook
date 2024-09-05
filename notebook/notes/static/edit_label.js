@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Initialize the tooltip on the delete button
   initializeTooltip(deleteButton);
 
-  initializeTooltip(editButton);
+  // initializeTooltip(editButton);
 
   // Event listener for opening the modal
   editLabelModal.addEventListener("show.bs.modal", function (event) {
@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((response) => response.json())
       .then((data) => {
         if (data.label) {
+          // console.log(data.label)
           labelInput.value = data.label; // Populate modal input with label name
         }
       })
