@@ -20,7 +20,7 @@ class Note(models.Model):
     user= models.ForeignKey(CustomUser,on_delete=models.CASCADE, related_name='notes')
     title= models.CharField(max_length=100, null=False)
     body= models.TextField()
-    label= models.ForeignKey(Label, on_delete=models.SET_NULL, related_name="notes", blank=True, null=True)
+    label= models.ManyToManyField(Label, related_name="labels", blank=True)
     archived= models.BooleanField(default=False)
     pinned= models.BooleanField(default= False)
     created = models.DateTimeField(auto_now_add= True)
