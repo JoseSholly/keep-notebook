@@ -34,7 +34,7 @@
 
         <!-- Loop through the labels associated with the pinned note -->
 
-        <span class="badge rounded-pill text-bg-info">{% for label in other_note.label.all %}{{ label.name }} | {%endfor %}</span>
+        <span class="badge rounded-pill text-bg-info">{% for label in other_note.label.all|slice:":3" %}{{ label.name }} | {%endfor %}</span>
 
     </div>
     {% endfor %}
