@@ -33,13 +33,15 @@
 
           <!-- Labels -->
           <select name="label" class="form-select bg-dark text-white me-2" id="noteLabel"
-            style="max-width: 17rem; margin-left: 4%;">
+            style="max-width: 17rem; margin-left: 4%;" multiple>
             <option selected disabled>Choose label</option>
             <option value="">-------</option>
             {% for label in labels %}
             <option value="{{ label.id }}">{{ label.name }}</option>
             {% endfor %}
           </select>
+
+          
         </div>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" id="saveChangesButton">Save changes</button>

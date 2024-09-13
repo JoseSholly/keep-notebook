@@ -5,28 +5,37 @@
 
 <p class="text-capitalize" id="pinnedArea" style="font-weight: bold; font-size: larger;">PINNED NOTES</p>
 <div class="card-container">
-    
+
     {% for pinned_note in pinned_notes %}
     <div class="card" data-note-id="{{ pinned_note.id }}">
         <a href="#" class="note-link" data-note-id="{{ pinned_note.id }}">
             <h5 class="card-title">{{ pinned_note.title }}</h5>
             <p class="card-text">{{ pinned_note.body|truncatechars:650 }}</p>
         </a>
-        <span class="badge rounded-pill text-bg-info">{{ pinned_note.label.name }}</span>
+
+        <!-- Loop through the labels associated with the pinned note -->
+        
+        <span class="badge rounded-pill text-bg-info">{% for label in pinned_note.label.all %}{{ label.name }} | {% endfor %}</span>
+        
+
     </div>
     {% endfor %}
 </div>
 
-<p class="text-capitalize" style="font-weight: bold; font-size: larger;" id="noteArea" >OTHER NOTES</p>
+<p class="text-capitalize" style="font-weight: bold; font-size: larger;" id="noteArea">OTHER NOTES</p>
 <div class="card-container">
-    
+
     {% for other_note in other_notes %}
     <div class="card" data-note-id="{{ other_note.id }}">
         <a href="#" class="note-link" data-note-id="{{ other_note.id }}">
             <h5 class="card-title">{{ other_note.title }}</h5>
             <p class="card-text">{{ other_note.body|truncatechars:650 }}</p>
         </a>
-        <span class="badge rounded-pill text-bg-info">{{ other_note.label.name }}</span>
+
+        <!-- Loop through the labels associated with the pinned note -->
+
+        <span class="badge rounded-pill text-bg-info">{% for label in other_note.label.all %}{{ label.name }} | {%endfor %}</span>
+
     </div>
     {% endfor %}
 </div>

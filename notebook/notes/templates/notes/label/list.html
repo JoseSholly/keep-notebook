@@ -23,7 +23,7 @@
             <h5 class="card-title">{{ note.title }}</h5>
             <p class="card-text">{{ note.body|truncatechars:650 }}</p>
         </a>
-        <span class="badge rounded-pill text-bg-info">{{ note.label.name}}</span>
+        <span class="badge rounded-pill text-bg-info"style="width:;">{% for label in note.label.all %}{{ label.name }} | {%endfor %}</span>
 
     </div>
 

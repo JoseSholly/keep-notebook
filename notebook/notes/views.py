@@ -23,7 +23,6 @@ def notes_list(request):
     form = NoteForm()
     pinned_notes = Note.objects.filter(user=user, pinned=True, archived=False, trashed= False)
     other_notes = Note.objects.filter(user=user, pinned=False, archived=False,  trashed= False)
-
     return render(request,
                   'notes/note/list.html',
                   {'pinned_notes': pinned_notes,
@@ -96,19 +95,20 @@ def note_detail(request, note_id):
         note.body = data.get('body', note.body)
 
         # Handle the label
-        label_id = data.get('label')
-        if label_id:
-            label = get_object_or_404(Label, pk=label_id, user=user)
-            note.label = label
+        label_ids = data.get('label', [])
+        if label_ids:
+            labels = get_object_or_404(Label, pk__in=label_ids, user=user)
+            print(labels)
+            note.label.set(labels)
         else:
             note.label = None
-
+        
         note.save()
         messages.success(request, "Note updated.")
         return JsonResponse({
             'status': 'success',
             'updated': format_updated_time(note.updated),  # Format updated time,
-            'label': note.label.id if note.label else None
+            'label': list(note.label.values_list('id', flat=True))
         })
 
     return JsonResponse({
@@ -116,7 +116,7 @@ def note_detail(request, note_id):
         'title': note.title,
         'body': note.body,
         'updated': format_updated_time(note.updated),  # Format updated time
-        'label': note.label.id if note.label else None,
+        'label': list(note.label.values_list('id', flat=True)),
         'archived': note.archived,
         'pinned': note.pinned
     })

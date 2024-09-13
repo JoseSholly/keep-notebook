@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
       fetch(`/notes/${noteId}/`)
         .then((response) => response.json())
         .then((data) => {
+          console.log(data);
           // Populate modal with note details
           document.getElementById("noteTitle").value = data.title;
           document.getElementById("noteBody").value = data.body;
@@ -31,10 +32,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
           // Handle label dropdown
           const labelDropdown = document.getElementById("noteLabel");
-          if (data.label !== null) {
-            labelDropdown.value = data.label; // Select the label
-            labelDropdown.options[0].text =
-              labelDropdown.options[labelDropdown.selectedIndex].text;
+
+          // Clear any existing selections
+          for (let i = 0; i < labelDropdown.options.length; i++) {
+            labelDropdown.options[i].selected = false;
+          }
+
+          if (data.label && Array.isArray(data.label)) {
+            // Iterate over the array of labels
+            data.label.forEach((labelId) => {
+              // Find the option that matches the label ID and select it
+              for (let i = 0; i < labelDropdown.options.length; i++) {
+                if (labelDropdown.options[i].value === labelId.toString()) {
+                  labelDropdown.options[i].selected = true;
+                }
+              }
+            });
+
+            // Update the text to show selected labels, or the default text if none
+            if (labelDropdown.selectedOptions.length > 0) {
+              labelDropdown.options[0].text = Array.from(
+                labelDropdown.selectedOptions
+              )
+                .map((option) => option.text)
+                .join(", ");
+            } else {
+              labelDropdown.options[0].text = "Choose label";
+            }
           } else {
             labelDropdown.value = "";
             labelDropdown.options[0].text = "Choose label";

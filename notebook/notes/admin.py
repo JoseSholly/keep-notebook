@@ -10,7 +10,7 @@ class LabelInline(admin.TabularInline):
 class NoteAdmin(admin.ModelAdmin):
     list_display = ['id', 'user', 'title', 'get_labels', 'created', 'updated', 'is_trashed']
     search_fields = ['user__email', 'title', 'body']
-    list_filter = ['label', 'pinned', 'created', 'updated', 'archived', 'trashed']
+    list_filter = ['user','label', 'pinned','updated', 'archived', 'trashed']
     actions = ['move_to_trash', 'restore_from_trash']
     filter_horizontal = ('label',)
 
