@@ -44,6 +44,3 @@ class Note(models.Model):
             return reverse('notes:label_list', args=[self.label.name])
         return reverse('notes:notes')
     
-    def get_labels(self, obj):
-        return ", ".join([label.name for label in obj.label.all()])
-    get_labels.short_description = 'Labels'

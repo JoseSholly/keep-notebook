@@ -33,7 +33,13 @@ class NoteAdmin(admin.ModelAdmin):
 
 @admin.register(Label)
 class LabelAdmin(admin.ModelAdmin):
-    list_display = ['name', 'user',]
+    list_display = ['name', 'user','note_count',]
     search_fields = ['name', 'user__email']
     list_filter = ['user']
     inlines = [LabelInline]
+
+    def note_count(self, obj):
+        label_id = obj.id
+        no_of_Notes= Note.objects.filter(label=label_id).count()
+        return no_of_Notes
+    note_count.short_description = 'Number of Notes'
