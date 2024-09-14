@@ -13,9 +13,14 @@
             <p class="card-text">{{ pinned_note.body|truncatechars:650 }}</p>
         </a>
 
-        <!-- Loop through the labels associated with the pinned note -->
-        
-        <span class="badge rounded-pill text-bg-info">{% for label in pinned_note.label.all %}{{ label.name }} | {% endfor %}</span>
+        <!-- Row for labels -->
+        <div class="row">
+            {% for label in pinned_note.label.all|slice:":4" %}
+            <div class="col-auto me-5" style="margin-right: 2.5rem !important;">
+                <span class="badge rounded-pill text-bg-info" style="min-width: fit-content;">{{ label.name }}</span>
+            </div>
+            {% endfor %}
+        </div>
         
 
     </div>
@@ -24,20 +29,25 @@
 
 <p class="text-capitalize" style="font-weight: bold; font-size: larger;" id="noteArea">OTHER NOTES</p>
 <div class="card-container">
+{% for other_note in other_notes %}
+<div class="card" data-note-id="{{ other_note.id }}">
+    <a href="#" class="note-link" data-note-id="{{ other_note.id }}">
+        <h5 class="card-title">{{ other_note.title }}</h5>
+        <p class="card-text">{{ other_note.body|truncatechars:650 }}</p>
+    </a>
 
-    {% for other_note in other_notes %}
-    <div class="card" data-note-id="{{ other_note.id }}">
-        <a href="#" class="note-link" data-note-id="{{ other_note.id }}">
-            <h5 class="card-title">{{ other_note.title }}</h5>
-            <p class="card-text">{{ other_note.body|truncatechars:650 }}</p>
-        </a>
-
-        <!-- Loop through the labels associated with the pinned note -->
-
-        <span class="badge rounded-pill text-bg-info">{% for label in other_note.label.all|slice:":3" %}{{ label.name }} | {%endfor %}</span>
-
+    <!-- Row for labels -->
+    <div class="row">
+        {% for label in other_note.label.all|slice:":4" %}
+        <div class="col-auto me-5" style="margin-right: 2.5rem !important;">
+            <span class="badge rounded-pill text-bg-info" style="min-width: fit-content;">{{ label.name }}</span>
+        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
+</div>
+{% endfor %}
+
+
 </div>
 
 {% include "notes/modal.html" %}

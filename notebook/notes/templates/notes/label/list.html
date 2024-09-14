@@ -23,8 +23,14 @@
             <h5 class="card-title">{{ note.title }}</h5>
             <p class="card-text">{{ note.body|truncatechars:650 }}</p>
         </a>
-        <span class="badge rounded-pill text-bg-info"style="">{% for label in note.label.all|slice:":3" %}{{ label.name }} | {%endfor %}</span>
-
+        <!-- Row for labels -->
+        <div class="row">
+            {% for label in note.label.all|slice:":4" %}
+            <div class="col-auto me-5" style="margin-right: 2.5rem !important;">
+                <span class="badge rounded-pill text-bg-info" style="min-width: fit-content;">{{ label.name }}</span>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 
     {% else %}

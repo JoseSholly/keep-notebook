@@ -86,41 +86,42 @@ def format_updated_time(updated):
     
 @login_required
 def note_detail(request, note_id):
-    user= request.user
-    note = get_object_or_404(Note, pk=note_id, user= user, trashed= False)
+    user = request.user
+    note = get_object_or_404(Note, pk=note_id, user=user, trashed=False)
+
     if request.method == 'POST':
         data = json.loads(request.body)
-        
+
         note.title = data.get('title', note.title)
         note.body = data.get('body', note.body)
 
-        # Handle the label
         label_ids = data.get('label', [])
+
         if label_ids:
-            labels = get_object_or_404(Label, pk__in=label_ids, user=user)
-            print(labels)
+            # Handle multiple labels (if expected)
+            print(label_ids)
+            labels = Label.objects.filter(pk__in=label_ids, user=user)
             note.label.set(labels)
         else:
-            note.label = None
-        
+            note.label.clear()  # Clear labels if no IDs provided
+
         note.save()
         messages.success(request, "Note updated.")
         return JsonResponse({
             'status': 'success',
-            'updated': format_updated_time(note.updated),  # Format updated time,
-            'label': list(note.label.values_list('id', flat=True))
+            'updated': format_updated_time(note.updated),
+            'label': list(note.label.values_list('id', flat=True)),
         })
 
     return JsonResponse({
         'id': note.id,
         'title': note.title,
         'body': note.body,
-        'updated': format_updated_time(note.updated),  # Format updated time
+        'updated': format_updated_time(note.updated),
         'label': list(note.label.values_list('id', flat=True)),
         'archived': note.archived,
         'pinned': note.pinned
     })
-
 @login_required
 def note_create(request):
     user = request.user
