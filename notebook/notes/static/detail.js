@@ -6,12 +6,16 @@ document.addEventListener("DOMContentLoaded", function () {
   const deleteButton = document.querySelector(".btn-delete");
   const saveButton = document.getElementById("saveChangesButton");
 
+  // New label dropdown elements
+  const dropdownToggle = document.querySelector(".dropdown-toggle");
+  const dropdownMenu = document.querySelector(".dropdown-menu");
+  const dropdownItems = document.querySelectorAll(".dropdown-item");
+
   // Event listeners for note links to open the modal
   noteLinks.forEach((link) => {
     link.addEventListener("click", function (event) {
       event.preventDefault();
       const noteId = this.getAttribute("data-note-id");
-      
 
       // Fetch note details from the server
       fetch(`/notes/${noteId}/`)
@@ -31,38 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
           pinButton.setAttribute("data-note-id", data.id);
 
           // Handle label dropdown
-          const labelDropdown = document.getElementById("noteLabel");
-
-          // Clear any existing selections
-          for (let i = 0; i < labelDropdown.options.length; i++) {
-            labelDropdown.options[i].selected = false;
-          }
-
-          if (data.label && Array.isArray(data.label)) {
-            // Iterate over the array of labels
-            data.label.forEach((labelId) => {
-              // Find the option that matches the label ID and select it
-              for (let i = 0; i < labelDropdown.options.length; i++) {
-                if (labelDropdown.options[i].value === labelId.toString()) {
-                  labelDropdown.options[i].selected = true;
-                }
-              }
-            });
-
-            // Update the text to show selected labels, or the default text if none
-            if (labelDropdown.selectedOptions.length > 0) {
-              labelDropdown.options[0].text = Array.from(
-                labelDropdown.selectedOptions
-              )
-                .map((option) => option.text)
-                .join(", ");
-            } else {
-              labelDropdown.options[0].text = "Choose label";
-            }
-          } else {
-            labelDropdown.value = "";
-            labelDropdown.options[0].text = "Choose label";
-          }
+          initializeLabelDropdown(data.label, data.all_labels);
 
           // Update button states
           updateArchiveButtonState(data.archived);
@@ -82,11 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const noteId = this.getAttribute("data-note-id");
     const title = document.getElementById("noteTitle").value;
     const body = document.getElementById("noteBody").value;
-    const labelSelect = document.getElementById("noteLabel");
-    const label = labelSelect.value ? labelSelect.value : null;
-
-    // console.log("Save button clicked. Note ID:", noteId);
-    // console.log("Title:", title, "Body:", body, "Label:", label);
+    const selectedLabels = getSelectedLabels();
 
     // Send updated note details to the server
     fetch(`/notes/${noteId}/`, {
@@ -95,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
         "Content-Type": "application/json",
         "X-CSRFToken": getCookie("csrftoken"),
       },
-      body: JSON.stringify({ title: title, body: body, label: label }),
+      body: JSON.stringify({ title: title, body: body, label: selectedLabels }),
     })
       .then((response) => {
         if (response.ok) {
@@ -107,6 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .catch((error) => console.error("Error saving changes:", error));
   });
+
   // Archive/Unarchive button functionality
   if (archiveButton) {
     archiveButton.addEventListener("click", function () {
@@ -123,10 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((response) => response.json())
         .then((data) => {
           updateArchiveButtonState(data.archived);
-
-          // Redirect based on archive status
-          // window.location.href = data.archived ? "/notes/archived/" : "/notes/archived/";
-          window.location.reload()
+          window.location.reload();
         })
         .catch((error) => console.error("Error:", error));
     });
@@ -148,10 +115,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((response) => response.json())
         .then((data) => {
           updatePinButtonState(data.pinned);
-
-          // Reload or redirect as needed
-          // window.location.href = "/notes/";
-          window.location.reload()
+          window.location.reload();
         })
         .catch((error) => console.error("Error:", error));
     });
@@ -182,6 +146,94 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error("Note ID is missing.");
     }
   });
+
+  // Label dropdown functionality
+  dropdownToggle.addEventListener("click", function () {
+    dropdownMenu.style.display =
+      dropdownMenu.style.display === "none" ? "block" : "none";
+    if (dropdownMenu.style.display === "block") {
+      dropdownMenu.scrollTop = dropdownMenu.scrollHeight;
+    }
+  });
+
+  document.addEventListener("click", function (event) {
+    if (!event.target.closest(".custom-dropdown")) {
+      dropdownMenu.style.display = "none";
+    }
+  });
+
+  function updateItemStyle(item) {
+    const isSelected = item.querySelector('input[type="checkbox"]').checked;
+    item.style.order = isSelected ? "1" : "0";
+    item.style.backgroundColor = isSelected ? "#2c3136" : "";
+  }
+
+  function sortItems() {
+    const sortedItems = Array.from(dropdownItems).sort((a, b) => {
+      const aChecked = a.querySelector('input[type="checkbox"]').checked;
+      const bChecked = b.querySelector('input[type="checkbox"]').checked;
+      return bChecked - aChecked;
+    });
+    sortedItems.forEach((item) => dropdownMenu.appendChild(item));
+  }
+
+  function updateToggleText() {
+    const checkedLabels = document.querySelectorAll(
+      '.dropdown-item input[type="checkbox"]:checked'
+    );
+    if (checkedLabels.length > 0) {
+      dropdownToggle.textContent = `${checkedLabels.length} label${
+        checkedLabels.length > 1 ? "s" : ""
+      } selected`;
+    } else {
+      dropdownToggle.textContent = "Select Labels";
+    }
+    console.log("Checked Labels:", getSelectedLabels());
+  }
+function initializeLabelDropdown(selectedLabels, allLabels) {
+  // Clear existing items
+  dropdownMenu.innerHTML = "";
+
+  // Create dropdown items for each label
+  allLabels.forEach((label) => {
+    const item = document.createElement("div");
+    item.className = "dropdown-item";
+    item.dataset.labelId = label.id;
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    // Check if the label is already selected
+    checkbox.checked = selectedLabels.some((sl) => sl.id === label.id);
+
+    // Use the existing span for text
+    const labelText = document.createElement("span");
+    labelText.id = "label_text";
+    labelText.textContent = label.name; // Insert the label name into the span
+
+    item.appendChild(checkbox);
+    item.appendChild(labelText);
+    dropdownMenu.appendChild(item);
+
+    updateItemStyle(item);
+
+    checkbox.addEventListener("change", function () {
+      updateItemStyle(item);
+      updateToggleText();
+      sortItems();
+    });
+  });
+
+  updateToggleText();
+  sortItems();
+}
+
+ function getSelectedLabels() {
+   return Array.from(
+     document.querySelectorAll('.dropdown-item input[type="checkbox"]:checked')
+   ).map((checkbox) =>
+     parseInt(checkbox.closest(".dropdown-item").dataset.labelId)
+   );
+ }
 
   // Function to update archive button state
   function updateArchiveButtonState(isArchived) {

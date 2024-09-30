@@ -32,91 +32,38 @@
           </button>
 
           <!-- Labels -->
-          <select name="label" class="form-select bg-dark text-white me-2" id="noteLabel"
+          <!-- <select name="label" class="form-select bg-dark text-white me-2" id="noteLabel"
             style="max-width: 17rem; margin-left: 4%;" multiple>
             <option selected disabled>Choose label</option>
             <option value="">-------</option>
             {% for label in labels %}
             <option value="{{ label.id }}">{{ label.name }}</option>
             {% endfor %}
-          </select>
+          </select> -->
 
           <!-- CNdjdj -->
-          <div class="label-selection-container" style="max-width: 17rem; margin-left: 4%;">
-    <div class="custom-dropdown" style="position: relative;">
-        <button class="dropdown-toggle bg-dark text-white" style="width: 100%; padding: 8px 12px; text-align: left; border: 1px solid #6c757d; border-radius: 4px; cursor: pointer;">
-            Select Labels
-        </button>
-        <div class="dropdown-menu" style="display: none; position: absolute; top: 100%; left: 0; width: 100%; max-height: 200px; overflow-y: auto; background-color: #343a40; border: 1px solid #6c757d; border-radius: 4px; z-index: 1000;">
-            {% for label in labels %}
-                <label class="dropdown-item" style="display: block; padding: 8px 12px; cursor: pointer;" 
-                       data-label-id="{{ label.id }}">
-                    <input type="checkbox" name="selected_labels" value="{{ label.id }}" style="margin-right: 8px;">
-                    <span>{{ label.name }}</span>
+          <div class="label-selection-container" style="min-width: 12rem; margin: 0 0 12px 12px;">
+            <div class="custom-dropdown" style="position: relative;">
+              <div class="dropdown-menu"
+                style="display: none; position: absolute; bottom: 100%; left: 0; width: 100%; max-height: 200px; overflow-y: auto !important;    overflow-x: hidden; background-color: #383838; border: 1px solid #6c757d; border-top-left-radius: 4px; border-top-right-radius: 4px;">
+                <label class="dropdown-item label-item"
+                  style="display: flex; align-items: center; padding: 15px; cursor: pointer; color: white; margin-right: 10px !important;">
+                  <input type="checkbox" name="selected_labels" value="{{ label.id }}" style="margin-right: 8px;">
+                  <span id="label_text" class="label-text" style="margin-left: 12px; color: white;"></span>
                 </label>
-            {% endfor %}
-        </div>
-    </div>
-</div>
+              </div>
+              <button class="dropdown-toggle bg-dark text-white"
+                style="width: 100%; padding: 8px 12px; text-align: left; border: 1px solid #6c757d; border-radius: 4px; cursor: pointer;">
+                Select Labels
+              </button>
+            </div>
+          </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const dropdownToggle = document.querySelector('.dropdown-toggle');
-    const dropdownMenu = document.querySelector('.dropdown-menu');
-    const dropdownItems = document.querySelectorAll('.dropdown-item');
 
-    // Initial selected label IDs (replace this with actual data from your Django view)
-    const initialSelectedLabelIds = [
-        {% for label in note.labels.all %}
-            {{ label.id }}{% if not forloop.last %},{% endif %}
-        {% endfor %}
-    ];
 
-    dropdownToggle.addEventListener('click', function() {
-        dropdownMenu.style.display = dropdownMenu.style.display === 'none' ? 'block' : 'none';
-    });
 
-    document.addEventListener('click', function(event) {
-        if (!event.target.closest('.custom-dropdown')) {
-            dropdownMenu.style.display = 'none';
-        }
-    });
 
-    function updateItemStyle(item) {
-        const isSelected = item.querySelector('input[type="checkbox"]').checked;
-        item.style.order = isSelected ? '-1' : '0';
-        item.style.backgroundColor = isSelected ? '#2c3136' : '';
-    }
 
-    dropdownItems.forEach(item => {
-        const checkbox = item.querySelector('input[type="checkbox"]');
-        const labelId = parseInt(item.dataset.labelId);
-        
-        // Set initial state
-        if (initialSelectedLabelIds.includes(labelId)) {
-            checkbox.checked = true;
-            updateItemStyle(item);
-        }
-
-        checkbox.addEventListener('change', function() {
-            updateItemStyle(item);
-            updateToggleText();
-        });
-    });
-
-    function updateToggleText() {
-        const checkedLabels = document.querySelectorAll('.dropdown-item input[type="checkbox"]:checked');
-        if (checkedLabels.length > 0) {
-            dropdownToggle.textContent = `${checkedLabels.length} label${checkedLabels.length > 1 ? 's' : ''} selected`;
-        } else {
-            dropdownToggle.textContent = 'Select Labels';
-        }
-    }
-
-    // Initial update of toggle text
-    updateToggleText();
-});
-</script>         
         </div>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" id="saveChangesButton">Save changes</button>

@@ -88,6 +88,8 @@ def format_updated_time(updated):
 def note_detail(request, note_id):
     user = request.user
     note = get_object_or_404(Note, pk=note_id, user=user, trashed=False)
+    all_labels = Label.objects.filter(user=request.user).values('id', 'name')
+    all_labels = list(all_labels)
 
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -99,7 +101,7 @@ def note_detail(request, note_id):
 
         if label_ids:
             # Handle multiple labels (if expected)
-            print(label_ids)
+            # print(label_ids)
             labels = Label.objects.filter(pk__in=label_ids, user=user)
             note.label.set(labels)
         else:
@@ -118,9 +120,11 @@ def note_detail(request, note_id):
         'title': note.title,
         'body': note.body,
         'updated': format_updated_time(note.updated),
-        'label': list(note.label.values_list('id', flat=True)),
+        'label': list(note.label.values('id', 'name')),
         'archived': note.archived,
-        'pinned': note.pinned
+        'pinned': note.pinned,
+        'all_labels': all_labels,
+        
     })
 @login_required
 def note_create(request):

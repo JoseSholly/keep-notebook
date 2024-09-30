@@ -379,3 +379,32 @@ padding: 5px;
     .badge-container .badge {
         margin-right: 5px;
     }
+
+
+.label-item:hover {
+  background-color: #6c757d;
+}
+
+.label-text {
+  color: white; /* Ensure label text remains white */
+  margin-left: 12px; /* Space between checkbox and label */
+}
+
+
+.dropdown-item{
+    margin: 0;
+    color: white !important;
+}
+
+input[type="checkbox" i]{
+    margin-right: 10px !important;
+}
+
+.dropdown-item:hover{
+    color: white !important;
+    background-color: #202124 !important;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
