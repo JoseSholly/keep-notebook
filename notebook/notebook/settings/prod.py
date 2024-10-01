@@ -2,7 +2,11 @@ from .common import *
 
 SECRET_KEY= os.getenv("SECRET_KEY")
 
-DEBUG = False
+DEBUG = os.getenv("DEBUG")
+
+database_url= os.getenv("DATABASE_URL")
+
+DATABASES["default"] = dj_database_url.parse(database_url)
 
 ALLOWED_HOSTS = ['127.0.0.1', ]
 
@@ -22,3 +26,6 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+
+SESSION_COOKIE_SECURE= True
+CSRF_COOKIE_SECURE= True
