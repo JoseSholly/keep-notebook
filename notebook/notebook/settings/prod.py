@@ -4,6 +4,12 @@ SECRET_KEY= os.getenv("SECRET_KEY")
 
 DEBUG = os.getenv("DEBUG")
 
+
+database_url= os.getenv("DATABASE_URL")
+
+DATABASES["default"] = dj_database_url.parse(database_url)
+
+
 database_url= os.getenv("DATABASE_URL")
 DATABASES["default"] = dj_database_url.parse(database_url)
 
