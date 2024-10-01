@@ -11,10 +11,10 @@ DATABASES["default"] = dj_database_url.parse(database_url)
 
 
 database_url= os.getenv("DATABASE_URL")
+
 DATABASES["default"] = dj_database_url.parse(database_url)
 
-ALLOWED_HOSTS = ['127.0.0.1','https://keep-notebook.onrender.com' ]
-
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS")
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', '').split(",")
 
