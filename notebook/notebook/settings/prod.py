@@ -5,13 +5,11 @@ SECRET_KEY= os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG")
 
 database_url= os.getenv("DATABASE_URL")
-
 DATABASES["default"] = dj_database_url.parse(database_url)
 
 ALLOWED_HOSTS = ['127.0.0.1','https://keep-notebook.onrender.com' ]
 
 CORS_ALLOW_ALL_ORIGINS = False
-
 CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', '').split(",")
 
 CORS_ALLOW_CREDENTIALS = True
