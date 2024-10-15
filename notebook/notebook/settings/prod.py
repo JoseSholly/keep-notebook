@@ -2,19 +2,22 @@ from .common import *
 
 SECRET_KEY= os.getenv("SECRET_KEY")
 
-DEBUG = os.getenv("DEBUG") 
+DEBUG = os.getenv("DEBUG", "False").lower() in ['true', '1']
+
+# DEBUG= False
+
+database_url= os.getenv("DATABASE_URL")
+
+DATABASES["default"] = dj_database_url.parse(database_url)
 
 
 database_url= os.getenv("DATABASE_URL")
 
 DATABASES["default"] = dj_database_url.parse(database_url)
 
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(',')
 
-database_url= os.getenv("DATABASE_URL")
 
-DATABASES["default"] = dj_database_url.parse(database_url)
-
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "keep-notebook.onrender.com").split(",")
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', '').split(",")
 
