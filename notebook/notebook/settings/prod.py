@@ -2,9 +2,9 @@ from .common import *
 
 SECRET_KEY= os.getenv("SECRET_KEY")
 
-# DEBUG = os.getenv("DEBUG", "False").lower() in ['true', '1']
+DEBUG = os.getenv("DEBUG", "False").lower() in ['true', '1']
 
-DEBUG= False
+# DEBUG= False
 
 database_url= os.getenv("DATABASE_URL")
 
