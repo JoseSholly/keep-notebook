@@ -2,7 +2,8 @@ from .common import *
 
 SECRET_KEY= os.getenv("SECRET_KEY")
 
-DEBUG = os.getenv("DEBUG", "False").lower() in ['true', '1']
+DEBUG = os.getenv("DEBUG_VALUE", "False").lower() in ['true', '1']
+print(type(DEBUG))
 
 # DEBUG= False
 
