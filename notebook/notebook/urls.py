@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 from notes.views import notes_list
 from accounts.views import *
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -26,3 +28,7 @@ urlpatterns = [
     path('accounts/', include('accounts.urls', namespace='user')),
     path('', notes_list, name='note_list'),
 ]
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
