@@ -5,7 +5,7 @@ SECRET_KEY= os.getenv("SECRET_KEY")
 # DEBUG = os.getenv("DEBUG_VALUE", "False").lower() in ['true', '1']
 DEBUG= False
 
-print(f"DEBUG={DEBUG}, type:{type(DEBUG)}")
+# print(f"DEBUG={DEBUG}, type:{type(DEBUG)}")
 
 # DEBUG= False
 
@@ -45,7 +45,7 @@ STATICFILES_DIRS = [
     # add other directories if needed
 ]
 # print(PROJECT_DIR)
-print(STATICFILES_DIRS)
+# print(STATICFILES_DIRS)
 
 # This production code might break development mode, so we check # This production code might break development mode, so we check whether we're in DEBUG mode
 if not DEBUG:
